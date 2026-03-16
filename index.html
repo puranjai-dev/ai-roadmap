@@ -13,355 +13,480 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
---bg:#0a0a0f;--bg2:#131319;--bg3:#1b1b24;--bg4:#242430;
---border:#2a2a38;--border2:#3a3a4a;
---text:#e8e8ed;--text2:#9898aa;--text3:#666680;
---accent:#f5a623;--accent2:#d4900e;--aglow:rgba(245,166,35,.1);
---critical:#ff4757;--high:#ff8c42;--medium:#ffd166;--low:#06d6a0;
---r:10px;--rl:14px;
---font:'Outfit',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
---hh:60px;--th:50px;
-}
+:root{--bg:#0a0a0f;--bg2:#131319;--bg3:#1b1b24;--bg4:#242430;--border:#2a2a38;--border2:#3a3a4a;--text:#e8e8ed;--text2:#9898aa;--text3:#666680;--accent:#f5a623;--accent2:#d4900e;--aglow:rgba(245,166,35,.1);--critical:#ff4757;--high:#ff8c42;--medium:#ffd166;--low:#06d6a0;--inprog:#a78bfa;--r:10px;--rl:14px;--font:'Outfit',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;--hh:60px;--th:50px}
 html{font-size:16px;-webkit-text-size-adjust:100%}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;line-height:1.55}
 ::selection{background:var(--accent);color:#000}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 a{color:var(--accent);text-decoration:none}a:hover{color:#ffc56e}
-
-.hdr{position:fixed;top:0;left:0;right:0;height:var(--hh);background:rgba(10,10,15,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);z-index:100;display:flex;align-items:center;padding:0 20px;gap:14px}
+/* HEADER */
+.hdr{position:fixed;top:0;left:0;right:0;height:var(--hh);background:rgba(10,10,15,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);z-index:100;display:flex;align-items:center;padding:0 20px;gap:10px}
 .logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .li{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#e07a08);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#000}
 .lt{font-weight:600;font-size:16px;white-space:nowrap}.lt span{color:var(--text3);font-weight:400;font-size:13px;margin-left:3px}
-.hs{display:flex;align-items:center;gap:12px;margin-left:auto;flex-shrink:0}
+.hs{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.hbtn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.hbtn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
 .pill{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);background:var(--bg2);padding:5px 11px;border-radius:20px;border:1px solid var(--border);white-space:nowrap}
 .pill .n{font-family:var(--mono);font-weight:500;color:var(--accent)}
 .rw{position:relative;width:34px;height:34px;flex-shrink:0;cursor:pointer}.rw:hover{transform:scale(1.08)}
 .rsvg{transform:rotate(-90deg)}.rbg{fill:none;stroke:var(--border);stroke-width:3}.rfill{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .6s}
 .rtxt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;font-family:var(--mono);color:var(--accent)}
-
-.tw{position:fixed;top:var(--hh);left:0;right:0;height:var(--th);background:rgba(10,10,15,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:99;overflow-x:auto;scrollbar-width:none}
-.tw::-webkit-scrollbar{display:none}
+/* TABS */
+.tw{position:fixed;top:var(--hh);left:0;right:0;height:var(--th);background:rgba(10,10,15,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:99;overflow-x:auto;scrollbar-width:none}.tw::-webkit-scrollbar{display:none}
 .tabs{display:flex;align-items:center;height:100%;padding:0 16px;gap:3px;min-width:max-content}
 .tab{padding:7px 13px;border-radius:8px;font-size:12.5px;font-weight:500;color:var(--text3);cursor:pointer;transition:all .15s;white-space:nowrap;border:1px solid transparent;display:flex;align-items:center;gap:7px;user-select:none}
-.tab:hover{color:var(--text2);background:var(--bg2)}
-.tab.active{color:var(--text);background:var(--bg3);border-color:var(--border)}
+.tab:hover{color:var(--text2);background:var(--bg2)}.tab.active{color:var(--text);background:var(--bg3);border-color:var(--border)}
 .tbadge{font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:10px;background:var(--bg4);color:var(--text3);line-height:1.3}
-.tab.active .tbadge{background:var(--aglow);color:var(--accent)}
-.tab.done .tbadge{background:rgba(6,214,160,.12);color:var(--low)}
+.tab.active .tbadge{background:var(--aglow);color:var(--accent)}.tab.done .tbadge{background:rgba(6,214,160,.12);color:var(--low)}
 .tdot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-
+/* MAIN */
 .main{margin-top:calc(var(--hh) + var(--th));padding:20px 16px 120px;max-width:880px;margin-left:auto;margin-right:auto}
-.phdr{margin-bottom:20px}
-.ptitle{font-size:22px;font-weight:600;letter-spacing:-.4px;margin-bottom:2px;display:flex;align-items:center;gap:8px}
+.phdr{margin-bottom:20px}.ptitle{font-size:22px;font-weight:600;letter-spacing:-.4px;margin-bottom:2px;display:flex;align-items:center;gap:8px}
 .psub{color:var(--text3);font-size:13px;margin-bottom:14px}
-.pbarw{display:flex;align-items:center;gap:10px}
-.btr{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
-.bf{height:100%;border-radius:3px;transition:width .4s;background:var(--accent)}.bf.ok{background:var(--low)}
-.bpct{font-family:var(--mono);font-size:12px;color:var(--text2);min-width:36px;text-align:right}
-
+.pbarw{display:flex;align-items:center;gap:10px}.btr{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.bf{height:100%;border-radius:3px;transition:width .4s;background:var(--accent)}.bf.ok{background:var(--low)}.bpct{font-family:var(--mono);font-size:12px;color:var(--text2);min-width:36px;text-align:right}
+/* FILTERS */
 .fbar{display:flex;align-items:center;gap:6px;margin-bottom:16px;flex-wrap:wrap}
 .fb{padding:5px 12px;border-radius:16px;font-size:11.5px;font-weight:500;color:var(--text3);background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:all .15s;font-family:var(--font);user-select:none}
 .fb:hover{border-color:var(--border2);color:var(--text2)}.fb.on{color:var(--text);border-color:var(--accent);background:var(--aglow)}
-.si{flex:1;min-width:140px;padding:6px 12px;border-radius:16px;font-size:13px;color:var(--text);background:var(--bg2);border:1px solid var(--border);font-family:var(--font);outline:none;transition:border-color .15s}
-.si::placeholder{color:var(--text3)}.si:focus{border-color:var(--accent)}
-
-/* ── CARD: normal state ── */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px 18px;margin-bottom:10px;transition:all .25s;position:relative}
+.si{flex:1;min-width:140px;padding:6px 12px;border-radius:16px;font-size:13px;color:var(--text);background:var(--bg2);border:1px solid var(--border);font-family:var(--font);outline:none}.si:focus{border-color:var(--accent)}.si::placeholder{color:var(--text3)}
+.scan-btn{padding:5px 14px;border-radius:16px;font-size:11.5px;font-weight:500;color:var(--accent);background:var(--aglow);border:1px solid var(--accent);cursor:pointer;font-family:var(--font);transition:all .15s;white-space:nowrap}
+.scan-btn:hover{background:rgba(245,166,35,.2)}.scan-btn:disabled{opacity:.5;cursor:wait}
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px 18px;margin-bottom:10px;transition:border-color .15s,background .15s,opacity .15s;position:relative}
 .card:hover{border-color:var(--border2);background:var(--bg3)}
-.card.chk{opacity:.5}.card.chk:hover{opacity:.7}
-.card.chk .ititle{text-decoration:line-through;text-decoration-color:var(--text3)}
-/* ── CARD: expanded (focus mode) ── */
-.card.expanded{border-color:var(--accent);background:var(--bg3);margin-bottom:16px}
-.card.dimmed{display:none}
-.card .detail-panel{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
-.card.expanded .detail-panel{display:block}
-.card.expanded .desc-short{display:none}
-
-.dbtn{font-size:11px;color:var(--text3);cursor:pointer;padding:3px 9px;border-radius:6px;background:var(--bg4);user-select:none;transition:all .15s;border:1px solid transparent;font-family:var(--font);font-weight:500;margin-left:auto;flex-shrink:0;white-space:nowrap;align-self:center}
+.card.st-done{opacity:.5}.card.st-done:hover{opacity:.7}.card.st-done .ititle{text-decoration:line-through;text-decoration-color:var(--text3)}
+.card.st-ip{border-left:3px solid var(--inprog)}
+.card.expanded{border-color:var(--accent);background:var(--bg3)}.card.dimmed{display:none}
+.card .dp{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}.card.expanded .dp{display:block}
+.card.expanded .ds{display:none}
+/* REC CARD */
+.card.rec{border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.04)}
+.rec-bar{display:flex;align-items:center;gap:6px;margin-top:10px;flex-wrap:wrap}
+.rec-add{padding:4px 12px;border-radius:6px;font-size:11px;font-weight:500;color:#000;background:var(--accent);border:none;cursor:pointer;font-family:var(--font)}
+.rec-add:hover{background:var(--accent2)}
+.rec-del{padding:4px 12px;border-radius:6px;font-size:11px;font-weight:500;color:var(--text3);background:var(--bg4);border:1px solid var(--border);cursor:pointer;font-family:var(--font)}
+.rec-del:hover{color:var(--critical);border-color:var(--critical)}
+.rec-worth{font-size:11px;font-family:var(--mono);margin-left:auto}
+.rec-worth.yes{color:var(--low)}.rec-worth.no{color:var(--text3)}
+.rec-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.rec-header span{font-size:13px;font-weight:500;color:var(--accent)}
+.rec-clear{margin-left:auto;font-size:11px;color:var(--critical);background:none;border:1px solid rgba(255,71,87,.2);padding:3px 10px;border-radius:6px;cursor:pointer;font-family:var(--font)}
+.rec-clear:hover{background:rgba(255,71,87,.08)}
+/* DBTN */
+.dbtn{font-size:11px;color:var(--text3);cursor:pointer;padding:3px 9px;border-radius:6px;background:var(--bg4);user-select:none;transition:all .15s;border:1px solid transparent;font-family:var(--font);font-weight:500;margin-left:auto;flex-shrink:0;white-space:nowrap}
 .dbtn:hover{color:var(--accent);border-color:var(--accent);background:var(--aglow)}
 .card.expanded .dbtn{color:var(--accent);border-color:var(--accent);background:var(--aglow)}
-
+/* CARD INTERNALS */
 .itop{display:flex;align-items:flex-start;gap:12px}
-.cbw{flex-shrink:0;margin-top:2px}
-.cb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border:2px solid var(--border2);border-radius:6px;cursor:pointer;transition:all .15s;display:block;background:transparent}
-.cb:hover{border-color:var(--accent)}
-.cb:checked{background:var(--accent);border-color:var(--accent)}
-.cb:checked::after{content:'✓';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#000;height:100%}
+.stbtn{width:22px;height:22px;border-radius:6px;border:2px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:all .15s;flex-shrink:0;margin-top:1px;background:transparent;color:transparent;font-family:var(--font)}
+.stbtn:hover{border-color:var(--accent)}
+.stbtn.ip{border-color:var(--inprog);background:rgba(167,139,250,.15);color:var(--inprog)}
+.stbtn.done{border-color:var(--low);background:var(--low);color:#000}
 .ic{flex:1;min-width:0}
 .itr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
 .ititle{font-size:15px;font-weight:500;line-height:1.35}
 .pbadge{font-size:9.5px;font-weight:600;font-family:var(--mono);padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.4px;flex-shrink:0}
-.pbadge.critical{background:rgba(255,71,87,.12);color:var(--critical)}
-.pbadge.high{background:rgba(255,140,66,.12);color:var(--high)}
-.pbadge.medium{background:rgba(255,209,102,.12);color:var(--medium)}
-.pbadge.low{background:rgba(6,214,160,.12);color:var(--low)}
-.desc-short{font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.res-row{display:flex;flex-wrap:wrap;gap:5px}
+.pbadge.critical{background:rgba(255,71,87,.12);color:var(--critical)}.pbadge.high{background:rgba(255,140,66,.12);color:var(--high)}
+.pbadge.medium{background:rgba(255,209,102,.12);color:var(--medium)}.pbadge.low{background:rgba(6,214,160,.12);color:var(--low)}
+.ds{font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dep-hint{font-size:11px;color:var(--text3);margin-bottom:6px}.dep-hint a{color:var(--inprog);font-weight:500}
+.rr{display:flex;flex-wrap:wrap;gap:5px}
 .rchip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:11.5px;font-weight:500;background:var(--bg4);color:var(--text2);border:1px solid transparent;transition:all .15s;text-decoration:none}
 .rchip:hover{border-color:var(--accent);color:var(--accent);background:var(--aglow)}
-
-/* ── DETAIL PANEL (expanded) ── */
-.dp-label{font-size:10px;font-weight:600;font-family:var(--mono);text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:8px}
-.dp-sec{margin-bottom:14px}
-.dp-desc{font-size:13.5px;color:var(--text2);line-height:1.6;margin-bottom:14px}
-.dp-tags{display:flex;flex-wrap:wrap;gap:5px}
-.dp-tag{font-size:11.5px;font-family:var(--mono);padding:3px 10px;border-radius:5px;color:var(--text2);background:var(--bg4);border:1px solid var(--border)}
-.dp-res{display:flex;flex-wrap:wrap;gap:6px}
-
-/* ── ANALYTICS ── */
-.afab{position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#e07a08);color:#000;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(245,166,35,.25);z-index:100;transition:transform .15s}
-.afab:hover{transform:scale(1.08)}
-.apanel{position:fixed;top:0;right:0;bottom:0;width:min(400px,100vw);background:var(--bg);border-left:1px solid var(--border);z-index:200;transform:translateX(100%);transition:transform .3s;overflow-y:auto;padding:24px;overscroll-behavior:contain}
-.apanel.open{transform:translateX(0)}
-.aov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:199;opacity:0;pointer-events:none;transition:opacity .25s}
-.aov.open{opacity:1;pointer-events:auto}
-.acl{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
-.acl:hover{background:var(--bg3);color:var(--text)}
-.at{font-size:19px;font-weight:600;margin-bottom:20px}
+/* DETAIL PANEL */
+.dpl{font-size:10px;font-weight:600;font-family:var(--mono);text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:8px}
+.dps{margin-bottom:14px}
+.dpd{font-size:13.5px;color:var(--text2);line-height:1.6;margin-bottom:14px}
+.dptags{display:flex;flex-wrap:wrap;gap:5px}
+.dpt{font-size:11.5px;font-family:var(--mono);padding:3px 10px;border-radius:5px;color:var(--text2);background:var(--bg4);border:1px solid var(--border)}
+.notes-area{width:100%;min-height:60px;padding:10px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:13px;resize:vertical;outline:none;line-height:1.5;margin-top:4px}
+.notes-area:focus{border-color:var(--accent)}
+.notes-area::placeholder{color:var(--text3)}
+/* ANALYTICS */
+.afab{position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#e07a08);color:#000;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(245,166,35,.25);z-index:100;transition:transform .15s}.afab:hover{transform:scale(1.08)}
+.apanel{position:fixed;top:0;right:0;bottom:0;width:min(400px,100vw);background:var(--bg);border-left:1px solid var(--border);z-index:200;transform:translateX(100%);transition:transform .3s;overflow-y:auto;padding:24px;overscroll-behavior:contain}.apanel.open{transform:translateX(0)}
+.aov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:199;opacity:0;pointer-events:none;transition:opacity .25s}.aov.open{opacity:1;pointer-events:auto}
+.acl{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}.acl:hover{background:var(--bg3);color:var(--text)}
+.atit{font-size:19px;font-weight:600;margin-bottom:20px}
 .asec{margin-bottom:22px}.ast{font-size:10px;font-weight:600;font-family:var(--mono);text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:10px}
-.abig{text-align:center;padding:20px;background:var(--bg2);border-radius:var(--rl);border:1px solid var(--border)}
-.abn{font-size:46px;font-weight:700;font-family:var(--mono);color:var(--accent);line-height:1}.abl{font-size:12px;color:var(--text3);margin-top:4px}
-.apr{display:flex;align-items:center;gap:8px;margin-bottom:9px}
-.apnm{font-size:12.5px;color:var(--text2);min-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.abig{text-align:center;padding:20px;background:var(--bg2);border-radius:var(--rl);border:1px solid var(--border)}.abn{font-size:46px;font-weight:700;font-family:var(--mono);color:var(--accent);line-height:1}.abl{font-size:12px;color:var(--text3);margin-top:4px}
+.apr{display:flex;align-items:center;gap:8px;margin-bottom:9px}.apnm{font-size:12.5px;color:var(--text2);min-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .apbw{flex:1;height:7px;background:var(--bg4);border-radius:4px;overflow:hidden}.apbf{height:100%;border-radius:4px;transition:width .4s}
 .app{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:32px;text-align:right}
 .agrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.agi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;text-align:center}
-.agn{font-size:24px;font-weight:600;font-family:var(--mono);line-height:1.1}.agl{font-size:10.5px;color:var(--text3);margin-top:3px}
-.pbr{display:flex;flex-direction:column;gap:6px}.pb{display:flex;align-items:center;gap:7px;font-size:12.5px}
-.pbd{width:8px;height:8px;border-radius:50%;flex-shrink:0}.pbl{color:var(--text2);flex:1}.pbv{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.agi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;text-align:center}.agn{font-size:24px;font-weight:600;font-family:var(--mono);line-height:1.1}.agl{font-size:10.5px;color:var(--text3);margin-top:3px}
+.pbr{display:flex;flex-direction:column;gap:6px}.pb{display:flex;align-items:center;gap:7px;font-size:12.5px}.pbd{width:8px;height:8px;border-radius:50%;flex-shrink:0}.pbl{color:var(--text2);flex:1}.pbv{font-family:var(--mono);font-size:11px;color:var(--text3)}
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-ov.open{opacity:1;pointer-events:auto}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;max-width:440px;width:100%;max-height:80vh;overflow-y:auto}
+.modal h3{font-size:18px;font-weight:600;margin-bottom:16px}
+.modal label{font-size:12px;color:var(--text2);display:block;margin-bottom:4px;font-weight:500}
+.modal input[type=text],.modal input[type=url]{width:100%;padding:8px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:13px;outline:none;margin-bottom:12px}
+.modal input:focus{border-color:var(--accent)}
+.modal .mbtn{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font);border:1px solid var(--border);transition:all .15s}
+.modal .mbtn-p{color:#000;background:var(--accent);border-color:var(--accent)}.modal .mbtn-p:hover{background:var(--accent2)}
+.modal .mbtn-s{color:var(--text2);background:var(--bg3)}.modal .mbtn-s:hover{color:var(--text)}
+.modal .mrow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.modal .minfo{font-size:11.5px;color:var(--text3);margin-bottom:12px;line-height:1.5}
 .empty{text-align:center;padding:50px 20px;color:var(--text3)}.empty .em{font-size:36px;margin-bottom:8px}
 .resetw{text-align:center;margin-top:32px;padding-top:18px;border-top:1px solid var(--border)}
-.resetb{padding:8px 20px;border-radius:8px;font-size:12px;font-weight:500;color:var(--critical);background:rgba(255,71,87,.06);border:1px solid rgba(255,71,87,.15);cursor:pointer;font-family:var(--font)}
-.resetb:hover{background:rgba(255,71,87,.12)}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.card{animation:fadeUp .25s ease both}
+.resetb{padding:8px 20px;border-radius:8px;font-size:12px;font-weight:500;color:var(--critical);background:rgba(255,71,87,.06);border:1px solid rgba(255,71,87,.15);cursor:pointer;font-family:var(--font)}.resetb:hover{background:rgba(255,71,87,.12)}
+.imp-label{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;color:var(--text2);background:var(--bg3);border:1px solid var(--border);cursor:pointer;font-family:var(--font);display:inline-block}.imp-label:hover{color:var(--text)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}.card{animation:fadeUp .25s ease both}
 @keyframes flash{0%{opacity:0;transform:scale(.9)}40%{opacity:1}100%{opacity:0;transform:scale(1.05)}}
-.pcf{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:300;pointer-events:none}
-.pcf .msg{font-size:24px;font-weight:700;color:var(--low);animation:flash 1.6s ease forwards}
-
-@media(max-width:480px){
-  :root{--hh:56px;--th:46px}
-  html{font-size:18px}
-  .hdr{padding:0 16px;gap:8px}
-  .lt span{display:none}
-  .pill.hm{display:none}
-  .main{padding:18px 18px 110px}
-  .ptitle{font-size:20px}
-  .tab{padding:7px 12px;font-size:12px}
-  .card{padding:14px 16px}
-  .apanel{width:100vw;padding:20px}
-  .apnm{min-width:80px;font-size:11.5px}
-  .si{font-size:14px;padding:8px 14px}
-  .fb{padding:6px 13px;font-size:12px}
-}
-@media(min-width:481px) and (max-width:768px){.main{padding:20px 24px 120px}.pill.hm{display:none}}
-@media(min-width:1200px){.main{max-width:940px}}
-@media(min-width:1600px){.main{max-width:1020px}.card{padding:18px 22px}}
+.pcf{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:300;pointer-events:none}.pcf .msg{font-size:24px;font-weight:700;color:var(--low);animation:flash 1.6s ease forwards}
+@media(max-width:480px){:root{--hh:56px;--th:46px}html{font-size:18px}.hdr{padding:0 14px;gap:6px}.lt span{display:none}.pill.hm{display:none}.main{padding:18px 18px 110px}.ptitle{font-size:20px}.tab{padding:7px 12px;font-size:12px}.card{padding:14px 16px}.apanel{width:100vw;padding:20px}.apnm{min-width:80px;font-size:11.5px}.si{font-size:14px;padding:8px 14px}.fb{padding:6px 13px;font-size:12px}.modal{padding:20px}}
+@media(min-width:481px)and(max-width:768px){.main{padding:20px 24px 120px}.pill.hm{display:none}}
+@media(min-width:1200px){.main{max-width:940px}}@media(min-width:1600px){.main{max-width:1020px}.card{padding:18px 22px}}
 </style>
 </head>
 <body>
-
 <header class="hdr">
 <div class="logo"><div class="li">AI</div><div class="lt">Roadmap <span>2026</span></div></div>
 <div class="hs">
 <div class="pill hm"><span class="n" id="sd">0</span>/<span id="st">0</span></div>
-<div class="pill hm"><span class="n" id="sc">0</span> critical ✓</div>
+<button class="hbtn" id="gear" title="Settings">⚙</button>
 <div class="rw" id="rclick" title="Analytics"><svg class="rsvg" viewBox="0 0 36 36"><circle class="rbg" cx="18" cy="18" r="15"/><circle class="rfill" id="rf" cx="18" cy="18" r="15" stroke-dasharray="94.25" stroke-dashoffset="94.25"/></svg><div class="rtxt" id="rt">0%</div></div>
 </div>
 </header>
 <nav class="tw"><div class="tabs" id="tabs"></div></nav>
-
-<main class="main">
-<div id="phdr"></div>
-<div class="fbar" id="fbar"></div>
-<div id="il"></div>
-<div class="resetw" id="rw"><button class="resetb" id="rb">Reset all progress</button></div>
-</main>
-
+<main class="main"><div id="phdr"></div><div class="fbar" id="fbar"></div><div id="recs"></div><div id="il"></div>
+<div class="resetw" id="rw"><button class="resetb" id="rb">Reset all progress</button></div></main>
 <button class="afab" id="afab">📊</button>
 <div class="aov" id="aov"></div>
-<aside class="apanel" id="apn"><button class="acl" id="acl">✕</button><div class="at">Progress analytics</div><div id="ac"></div></aside>
-
+<aside class="apanel" id="apn"><button class="acl" id="acl">✕</button><div class="atit">Progress analytics</div><div id="ac"></div></aside>
+<div class="modal-ov" id="mov"><div class="modal" id="modal"></div></div>
+<input type="file" id="imp-file" accept=".json" style="display:none">
 <script>
+// ═══════════════════════════════════════
+// DATA — phases and items with deps
+// ═══════════════════════════════════════
 const P=[
 {id:'foundations',t:'Phase 1: Foundations',s:'Verify your existing knowledge — check off completed items',c:'#06d6a0',items:[
-{id:'f1',t:'Karpathy: Neural Networks — Zero to Hero',d:'The gold-standard deep learning playlist. Builds neural nets from scratch in Python: backprop engine (micrograd), character-level language models (makemore with bigrams → MLPs → WaveNet → Transformers), GPT from scratch (nanoGPT), and tokenization (minbpe). You\'ll understand every line of a transformer implementation by the end.',r:[{n:'▶️ Full Playlist (10 videos)',u:'https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ',t:'video'},{n:'GitHub: nn-zero-to-hero',u:'https://github.com/karpathy/nn-zero-to-hero',t:'code'},{n:'▶️ Let\'s Build GPT',u:'https://www.youtube.com/watch?v=kCc8FmEb1nY',t:'video'}],tags:['backprop','micrograd','makemore','GPT','tokenizer','transformer','attention','PyTorch','nanoGPT'],p:'critical'},
-{id:'f2',t:'3Blue1Brown: Neural Networks',d:'Beautiful visual intuitions for how neural networks learn. Covers neurons/layers, gradient descent, backpropagation mechanics, and a new chapter on transformers and attention. Watch alongside Karpathy for geometric intuition.',r:[{n:'▶️ Neural Net Playlist',u:'https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi',t:'video'},{n:'▶️ Attention in Transformers',u:'https://www.youtube.com/watch?v=eMlx5fFNoYc',t:'video'}],tags:['visual intuition','gradient descent','backprop','attention','transformers'],p:'critical'},
-{id:'f3',t:'HODL: MIT Sloan ML — Prof. Rama Ramakrishnan',d:'Applied ML from a business/decision-making lens. Covers when ML works, framing ML problems, evaluation thinking, practical deployment considerations. Great complement to pure technical content.',r:[{n:'▶️ HODL YouTube Course',u:'https://www.youtube.com/playlist?list=PLIBbMOLVTCMbp4HFN0AIbJMgHC0puSxFD',t:'video'},{n:'Rama\'s MIT Sloan Page',u:'https://mitsloan.mit.edu/faculty/directory/rama-ramakrishnan',t:'docs'}],tags:['applied ML','business framing','ML strategy','evaluation','MIT Sloan'],p:'high'},
-{id:'f4',t:'Stanford CS229: Machine Learning',d:'Andrew Ng\'s legendary ML course. Linear/logistic regression, SVMs, neural nets, unsupervised learning, EM algorithm, and the mathematical rigor behind it all.',r:[{n:'▶️ CS229 Full Lectures',u:'https://www.youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU',t:'video'},{n:'Course Notes',u:'https://cs229.stanford.edu/main_notes.pdf',t:'docs'}],tags:['ML fundamentals','regression','SVMs','math foundations','probability'],p:'medium'},
+{id:'f1',t:'Karpathy: Zero to Hero',d:'The gold-standard deep learning playlist. Builds neural nets from scratch: backprop (micrograd), language models (makemore), GPT from scratch (nanoGPT), and tokenization (minbpe).',r:[{n:'▶️ Full Playlist',u:'https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ',t:'video'},{n:'GitHub: nn-zero-to-hero',u:'https://github.com/karpathy/nn-zero-to-hero',t:'code'},{n:'▶️ Let\'s Build GPT',u:'https://www.youtube.com/watch?v=kCc8FmEb1nY',t:'video'}],tags:['backprop','micrograd','makemore','GPT','tokenizer','transformer','attention','PyTorch','nanoGPT'],p:'critical'},
+{id:'f2',t:'3Blue1Brown: Neural Networks',d:'Visual intuitions for neural nets, gradient descent, backprop, and transformers/attention.',r:[{n:'▶️ Neural Net Playlist',u:'https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi',t:'video'},{n:'▶️ Attention in Transformers',u:'https://www.youtube.com/watch?v=eMlx5fFNoYc',t:'video'}],tags:['visual intuition','gradient descent','backprop','attention','transformers'],p:'critical'},
+{id:'f3',t:'HODL: MIT Sloan ML — Prof. Rama',d:'Applied ML from a business/decision lens. When ML works, framing problems, evaluation thinking.',r:[{n:'▶️ HODL YouTube Course',u:'https://www.youtube.com/playlist?list=PLIBbMOLVTCMbp4HFN0AIbJMgHC0puSxFD',t:'video'},{n:'MIT Sloan Page',u:'https://mitsloan.mit.edu/faculty/directory/rama-ramakrishnan',t:'docs'}],tags:['applied ML','business framing','ML strategy','evaluation'],p:'high'},
+{id:'f4',t:'Stanford CS229: Machine Learning',d:'Andrew Ng\'s ML course. Regression, SVMs, neural nets, unsupervised learning, math rigor.',r:[{n:'▶️ CS229 Lectures',u:'https://www.youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU',t:'video'},{n:'Course Notes',u:'https://cs229.stanford.edu/main_notes.pdf',t:'docs'}],tags:['ML fundamentals','regression','SVMs','math foundations'],p:'medium'},
 ]},
-{id:'swe_ai',t:'Phase 2: AI for Software Engineers',s:'Everything a production SWE needs to build AI-powered applications — no PhD required',c:'#22d3ee',items:[
-{id:'sw1',t:'LLM API fundamentals',d:'Working with OpenAI, Anthropic, and open-source model APIs. Chat completions, system/user/assistant messages, temperature/top-p, streaming, token counting, cost estimation, rate limiting, retry patterns.',r:[{n:'▶️ FreeCodeCamp: LLM APIs Crash Course',u:'https://www.youtube.com/watch?v=xIxrkMij0Xk',t:'video'},{n:'Anthropic API Docs',u:'https://docs.anthropic.com/en/docs/initial-setup',t:'docs'},{n:'OpenAI Quickstart',u:'https://platform.openai.com/docs/quickstart',t:'docs'},{n:'▶️ Fireship: OpenAI API in 100s',u:'https://www.youtube.com/watch?v=_j7JEDWuqLE',t:'video'}],tags:['API','chat completions','streaming','tokens','rate limiting','cost','messages'],p:'critical'},
-{id:'sw2',t:'Prompt engineering (practical)',d:'Zero-shot, few-shot, chain-of-thought, system prompts, output formatting, prompt templates. The actual craft of getting LLMs to reliably do what you want in production code.',r:[{n:'▶️ DeepLearning.AI: Prompt Engineering',u:'https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/',t:'video'},{n:'Anthropic Prompt Guide',u:'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview',t:'docs'},{n:'▶️ Karpathy: State of GPT',u:'https://www.youtube.com/watch?v=bZQun8Y4L2A',t:'video'},{n:'OpenAI Prompt Best Practices',u:'https://platform.openai.com/docs/guides/prompt-engineering',t:'docs'}],tags:['zero-shot','few-shot','CoT','system prompts','templates','prompt design'],p:'critical'},
-{id:'sw3',t:'Embeddings & vector databases',d:'What embeddings are, generating them (OpenAI, Cohere, open-source), similarity/distance metrics, storing and querying in Qdrant/Pinecone/Chroma/Weaviate.',r:[{n:'▶️ Fireship: Vector DBs Explained',u:'https://www.youtube.com/watch?v=klTvEwg3oJ4',t:'video'},{n:'Qdrant Quickstart',u:'https://qdrant.tech/documentation/quickstart/',t:'docs'},{n:'▶️ James Briggs: Vector Search',u:'https://www.youtube.com/watch?v=dN0lsF2cvm4',t:'video'},{n:'Pinecone Learn: Embeddings',u:'https://www.pinecone.io/learn/vector-embeddings/',t:'blog'}],tags:['embeddings','vector DB','Qdrant','Pinecone','semantic search','cosine similarity'],p:'critical'},
-{id:'sw4',t:'RAG (Retrieval-Augmented Generation)',d:'The most common AI app pattern. Load → chunk → embed → store → retrieve → augment prompt → generate. Full pipeline, failure modes, and when RAG beats fine-tuning.',r:[{n:'▶️ DeepLearning.AI: RAG (Coursera)',u:'https://www.coursera.org/learn/retrieval-augmented-generation-rag',t:'video'},{n:'▶️ FreeCodeCamp: RAG Tutorial',u:'https://www.youtube.com/watch?v=u5Vcrwpzoz8',t:'video'},{n:'LangChain RAG Tutorial',u:'https://python.langchain.com/docs/tutorials/rag/',t:'docs'},{n:'▶️ LangChain: RAG From Scratch',u:'https://www.youtube.com/playlist?list=PLfaIDFEXuae2LXbO1_PKyVJiQ23ZztA0x',t:'video'}],tags:['RAG','chunking','retrieval','document QA','LangChain','pipeline'],p:'critical'},
-{id:'sw5',t:'LangChain & LangGraph essentials',d:'Chains, agents, tools, memory in LangChain. LangGraph for stateful multi-step workflows with conditional branching and checkpointing.',r:[{n:'▶️ LangChain Academy (free)',u:'https://academy.langchain.com/',t:'video'},{n:'LangGraph Docs',u:'https://langchain-ai.github.io/langgraph/',t:'docs'},{n:'▶️ FreeCodeCamp: LangChain Crash Course',u:'https://www.youtube.com/watch?v=lG7Uxts9SXs',t:'video'},{n:'▶️ Sam Witteveen: LangGraph',u:'https://www.youtube.com/watch?v=v9fkbTxPzs0',t:'video'}],tags:['LangChain','LangGraph','chains','agents','tools','memory','workflows'],p:'critical'},
-{id:'sw6',t:'Streaming & UX for AI apps',d:'SSE, streaming chat responses, token-by-token rendering, loading states, cancel/retry UX. The frontend craft of making AI apps feel fast.',r:[{n:'Vercel AI SDK',u:'https://sdk.vercel.ai/docs',t:'docs'},{n:'▶️ Theo: AI SDK',u:'https://www.youtube.com/watch?v=dRl_GGtKKPQ',t:'video'},{n:'▶️ Lee Robinson: AI Chatbot',u:'https://www.youtube.com/watch?v=mkJbEP5GeRA',t:'video'}],tags:['streaming','SSE','AI UX','Vercel AI SDK','chat UI'],p:'high'},
-{id:'sw7',t:'Running local models with Ollama',d:'Run Llama, Mistral, Phi, Gemma locally. Pull, serve, integrate with LangChain. Essential for dev, testing, and privacy-sensitive apps.',r:[{n:'▶️ NetworkChuck: Ollama',u:'https://www.youtube.com/watch?v=Wjrdr0NU4Sk',t:'video'},{n:'Ollama Docs',u:'https://ollama.com/',t:'docs'},{n:'▶️ Matt Williams: Ollama Series',u:'https://www.youtube.com/playlist?list=PLvsHpFoLfrSz26qnMY5gMhmLn5Z0b9sKm',t:'video'}],tags:['Ollama','local inference','Llama','Mistral','self-hosted'],p:'high'},
-{id:'sw8',t:'LLM observability & cost tracking',d:'Log every LLM call. Track latency, cost, tokens, errors. Debug prompt regressions. LangSmith, Helicone, Langfuse, LiteLLM.',r:[{n:'▶️ LangSmith Walkthrough',u:'https://www.youtube.com/watch?v=tFXm5ijah98',t:'video'},{n:'LangSmith Docs',u:'https://docs.smith.langchain.com/',t:'docs'},{n:'Langfuse Docs',u:'https://langfuse.com/docs',t:'docs'},{n:'Helicone Docs',u:'https://www.helicone.ai/docs',t:'docs'},{n:'LiteLLM Docs',u:'https://docs.litellm.ai/',t:'docs'}],tags:['observability','LangSmith','Langfuse','Helicone','LiteLLM','cost'],p:'high'},
-{id:'sw9',t:'AI app testing patterns',d:'Testing non-deterministic systems: snapshot tests for prompts, eval suites, semantic similarity assertions, LLM-as-judge in CI. The hardest testing problem in modern software.',r:[{n:'Hamel Husain: Your AI Product Needs Evals',u:'https://hamel.dev/blog/posts/evals/',t:'blog'},{n:'Promptfoo Docs',u:'https://www.promptfoo.dev/',t:'docs'},{n:'Braintrust Docs',u:'https://www.braintrust.dev/docs',t:'docs'},{n:'▶️ Braintrust: Building Evals',u:'https://www.youtube.com/watch?v=QnRMnIks3i8',t:'video'}],tags:['testing','evals','Promptfoo','CI/CD','regression','Braintrust'],p:'high'},
-{id:'sw10',t:'Memory patterns for AI apps',d:'Conversation memory is not just chat history. Covers buffer memory (full history), sliding window (last N turns), summary memory (compress old turns), token-aware truncation, and long-term memory with Mem0 or custom vector stores. Critical for any multi-turn AI app.',r:[{n:'▶️ DeepLearning.AI: LangChain Memory',u:'https://www.deeplearning.ai/short-courses/langchain-chat-with-your-data/',t:'video'},{n:'LangChain Memory Docs',u:'https://python.langchain.com/docs/concepts/memory/',t:'docs'},{n:'LangGraph Memory',u:'https://langchain-ai.github.io/langgraph/concepts/memory/',t:'docs'},{n:'Mem0 Docs',u:'https://docs.mem0.ai/',t:'docs'}],tags:['conversation memory','buffer','sliding window','summary','Mem0','token management','long-term memory'],p:'critical'},
-{id:'sw11',t:'Structured outputs & JSON mode',d:'Getting LLMs to return reliable, parseable data structures. JSON mode, function calling for extraction, Pydantic validation with Instructor library, retry-on-failure patterns. Essential for any AI feature that feeds into downstream code.',r:[{n:'▶️ Jason Liu: Instructor',u:'https://www.youtube.com/watch?v=yj-wSRJwrrc',t:'video'},{n:'Instructor Docs',u:'https://python.useinstructor.com/',t:'docs'},{n:'OpenAI Structured Outputs',u:'https://platform.openai.com/docs/guides/structured-outputs',t:'docs'},{n:'Anthropic Tool Use (for extraction)',u:'https://docs.anthropic.com/en/docs/build-with-claude/tool-use',t:'docs'}],tags:['structured outputs','JSON mode','Instructor','Pydantic','extraction','validation','retry'],p:'critical'},
-{id:'sw12',t:'Error handling & resilience',d:'LLM calls fail in unique ways: rate limits, timeouts, malformed outputs, context overflow, model degradation. Covers retry with exponential backoff, fallback chains (try Claude → fall back to GPT → fall back to local), circuit breakers, timeout budgets, and graceful degradation patterns.',r:[{n:'LiteLLM: Fallbacks',u:'https://docs.litellm.ai/docs/routing',t:'docs'},{n:'Tenacity (Python retries)',u:'https://tenacity.readthedocs.io/',t:'docs'},{n:'▶️ ArjanCodes: Error Handling',u:'https://www.youtube.com/watch?v=ZsvftkbbrR0',t:'video'}],tags:['error handling','retries','fallbacks','circuit breaker','timeout','graceful degradation','resilience'],p:'high'},
-{id:'sw13',t:'Caching strategies for LLM apps',d:'LLM calls are slow and expensive — caching is critical. Exact-match prompt cache, semantic cache (embed query, find similar cached response), KV-cache reuse on the serving side, embedding cache. GPTCache, Redis, and Momento patterns.',r:[{n:'GPTCache GitHub',u:'https://github.com/zilliztech/GPTCache',t:'code'},{n:'LangChain: Caching',u:'https://python.langchain.com/docs/how_to/llm_caching/',t:'docs'},{n:'▶️ Sam Witteveen: LLM Caching',u:'https://www.youtube.com/watch?v=eUN2clpAuDY',t:'video'}],tags:['caching','semantic cache','GPTCache','Redis','cost reduction','latency'],p:'high'},
-{id:'sw14',t:'Database patterns for AI apps',d:'Storing conversations (append-only chat logs vs structured), managing embeddings at scale, hybrid storage (Postgres + pgvector for small scale, dedicated vector DB for large), metadata filtering, user-scoped data isolation, and schema design for AI features.',r:[{n:'Supabase: pgvector Guide',u:'https://supabase.com/docs/guides/ai',t:'docs'},{n:'▶️ Fireship: pgvector',u:'https://www.youtube.com/watch?v=ibzlEQmgPPY',t:'video'},{n:'Neon: AI Docs',u:'https://neon.tech/docs/ai/ai-intro',t:'docs'}],tags:['pgvector','Supabase','conversation storage','metadata filtering','schema design','data isolation'],p:'high'},
-{id:'sw15',t:'Containerized AI deployment',d:'Dockerizing AI apps, GPU-aware containers (NVIDIA Container Toolkit), model weight caching in volumes, deploying to Modal/Fly.io/AWS, health checks for model endpoints, cold start optimization.',r:[{n:'▶️ Docker for ML',u:'https://www.youtube.com/watch?v=eBr3xABzmhA',t:'video'},{n:'Modal Docs',u:'https://modal.com/docs',t:'docs'},{n:'NVIDIA Container Toolkit',u:'https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/',t:'docs'}],tags:['Docker','GPU containers','Modal','deployment','health checks','cold start'],p:'medium'},
+{id:'swe_ai',t:'Phase 2: AI for Software Engineers',s:'Everything a production SWE needs to build AI-powered apps',c:'#22d3ee',items:[
+{id:'sw1',t:'LLM API fundamentals',d:'OpenAI, Anthropic, open-source APIs. Chat completions, messages, temperature, streaming, tokens, cost, rate limits.',r:[{n:'▶️ FreeCodeCamp: LLM APIs',u:'https://www.youtube.com/watch?v=xIxrkMij0Xk',t:'video'},{n:'Anthropic API Docs',u:'https://docs.anthropic.com/en/docs/initial-setup',t:'docs'},{n:'OpenAI Quickstart',u:'https://platform.openai.com/docs/quickstart',t:'docs'}],tags:['API','chat completions','streaming','tokens','rate limiting','cost'],p:'critical'},
+{id:'sw2',t:'Prompt engineering (practical)',d:'Zero-shot, few-shot, CoT, system prompts, output formatting, templates.',r:[{n:'▶️ DeepLearning.AI: Prompt Eng.',u:'https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/',t:'video'},{n:'Anthropic Prompt Guide',u:'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview',t:'docs'},{n:'▶️ Karpathy: State of GPT',u:'https://www.youtube.com/watch?v=bZQun8Y4L2A',t:'video'}],tags:['zero-shot','few-shot','CoT','system prompts','templates'],p:'critical',dep:'sw1'},
+{id:'sw3',t:'Embeddings & vector databases',d:'Embeddings, similarity metrics, Qdrant/Pinecone/Chroma/Weaviate.',r:[{n:'▶️ Fireship: Vector DBs',u:'https://www.youtube.com/watch?v=klTvEwg3oJ4',t:'video'},{n:'Qdrant Quickstart',u:'https://qdrant.tech/documentation/quickstart/',t:'docs'},{n:'▶️ James Briggs: Vector Search',u:'https://www.youtube.com/watch?v=dN0lsF2cvm4',t:'video'},{n:'Pinecone: Embeddings',u:'https://www.pinecone.io/learn/vector-embeddings/',t:'blog'}],tags:['embeddings','vector DB','Qdrant','Pinecone','semantic search','cosine similarity'],p:'critical'},
+{id:'sw4',t:'RAG (Retrieval-Augmented Generation)',d:'Load→chunk→embed→store→retrieve→augment→generate. Full pipeline & failure modes.',r:[{n:'▶️ DeepLearning.AI: RAG',u:'https://www.coursera.org/learn/retrieval-augmented-generation-rag',t:'video'},{n:'▶️ FreeCodeCamp: RAG',u:'https://www.youtube.com/watch?v=u5Vcrwpzoz8',t:'video'},{n:'LangChain RAG Tutorial',u:'https://python.langchain.com/docs/tutorials/rag/',t:'docs'},{n:'▶️ RAG From Scratch',u:'https://www.youtube.com/playlist?list=PLfaIDFEXuae2LXbO1_PKyVJiQ23ZztA0x',t:'video'}],tags:['RAG','chunking','retrieval','document QA','pipeline'],p:'critical',dep:'sw3'},
+{id:'sw5',t:'LangChain & LangGraph',d:'Chains, agents, tools, memory. LangGraph for stateful workflows.',r:[{n:'▶️ LangChain Academy',u:'https://academy.langchain.com/',t:'video'},{n:'LangGraph Docs',u:'https://langchain-ai.github.io/langgraph/',t:'docs'},{n:'▶️ FreeCodeCamp: LangChain',u:'https://www.youtube.com/watch?v=lG7Uxts9SXs',t:'video'}],tags:['LangChain','LangGraph','chains','agents','tools','memory'],p:'critical',dep:'sw1'},
+{id:'sw6',t:'Streaming & AI app UX',d:'SSE, token-by-token rendering, loading states, cancel/retry UX.',r:[{n:'Vercel AI SDK',u:'https://sdk.vercel.ai/docs',t:'docs'},{n:'▶️ Lee Robinson: AI Chatbot',u:'https://www.youtube.com/watch?v=mkJbEP5GeRA',t:'video'}],tags:['streaming','SSE','AI UX','Vercel AI SDK','chat UI'],p:'high'},
+{id:'sw7',t:'Running local models (Ollama)',d:'Run Llama, Mistral, Phi locally. Pull, serve, integrate with LangChain.',r:[{n:'▶️ NetworkChuck: Ollama',u:'https://www.youtube.com/watch?v=Wjrdr0NU4Sk',t:'video'},{n:'Ollama Docs',u:'https://ollama.com/',t:'docs'}],tags:['Ollama','local inference','Llama','Mistral','self-hosted'],p:'high'},
+{id:'sw8',t:'LLM observability & cost tracking',d:'Log every call. Track latency, cost, tokens, errors. LangSmith, Helicone, Langfuse.',r:[{n:'▶️ LangSmith Walkthrough',u:'https://www.youtube.com/watch?v=tFXm5ijah98',t:'video'},{n:'LangSmith Docs',u:'https://docs.smith.langchain.com/',t:'docs'},{n:'Langfuse',u:'https://langfuse.com/docs',t:'docs'},{n:'Helicone',u:'https://www.helicone.ai/docs',t:'docs'},{n:'LiteLLM',u:'https://docs.litellm.ai/',t:'docs'}],tags:['observability','LangSmith','Langfuse','Helicone','LiteLLM'],p:'high'},
+{id:'sw9',t:'AI app testing patterns',d:'Snapshot tests, eval suites, semantic similarity assertions, LLM-as-judge in CI.',r:[{n:'Hamel Husain: Evals',u:'https://hamel.dev/blog/posts/evals/',t:'blog'},{n:'Promptfoo',u:'https://www.promptfoo.dev/',t:'docs'},{n:'▶️ Braintrust: Evals',u:'https://www.youtube.com/watch?v=QnRMnIks3i8',t:'video'}],tags:['testing','evals','Promptfoo','CI/CD','Braintrust'],p:'high'},
+{id:'sw10',t:'Memory patterns for AI apps',d:'Buffer, sliding window, summary, token-aware truncation, long-term (Mem0).',r:[{n:'▶️ DeepLearning.AI: LangChain Memory',u:'https://www.deeplearning.ai/short-courses/langchain-chat-with-your-data/',t:'video'},{n:'LangChain Memory',u:'https://python.langchain.com/docs/concepts/memory/',t:'docs'},{n:'LangGraph Memory',u:'https://langchain-ai.github.io/langgraph/concepts/memory/',t:'docs'},{n:'Mem0 Docs',u:'https://docs.mem0.ai/',t:'docs'}],tags:['memory','buffer','sliding window','summary','Mem0','token management'],p:'critical',dep:'sw5'},
+{id:'sw11',t:'Structured outputs & JSON mode',d:'Reliable JSON from LLMs. Instructor + Pydantic, OpenAI JSON mode, retry-on-failure.',r:[{n:'▶️ Jason Liu: Instructor',u:'https://www.youtube.com/watch?v=yj-wSRJwrrc',t:'video'},{n:'Instructor Docs',u:'https://python.useinstructor.com/',t:'docs'},{n:'OpenAI Structured Outputs',u:'https://platform.openai.com/docs/guides/structured-outputs',t:'docs'}],tags:['structured outputs','JSON mode','Instructor','Pydantic','validation'],p:'critical',dep:'sw1'},
+{id:'sw12',t:'Error handling & resilience',d:'Rate limits, timeouts, malformed outputs, fallback chains, circuit breakers, graceful degradation.',r:[{n:'LiteLLM Fallbacks',u:'https://docs.litellm.ai/docs/routing',t:'docs'},{n:'Tenacity (retries)',u:'https://tenacity.readthedocs.io/',t:'docs'}],tags:['error handling','retries','fallbacks','circuit breaker','resilience'],p:'high'},
+{id:'sw13',t:'Caching strategies for LLM apps',d:'Exact-match cache, semantic cache (GPTCache), embedding cache, Redis patterns.',r:[{n:'GPTCache',u:'https://github.com/zilliztech/GPTCache',t:'code'},{n:'LangChain Caching',u:'https://python.langchain.com/docs/how_to/llm_caching/',t:'docs'}],tags:['caching','semantic cache','GPTCache','Redis','cost reduction'],p:'high'},
+{id:'sw14',t:'Database patterns for AI apps',d:'Chat storage, pgvector, metadata filtering, user-scoped isolation, schema design.',r:[{n:'Supabase AI Guide',u:'https://supabase.com/docs/guides/ai',t:'docs'},{n:'▶️ Fireship: pgvector',u:'https://www.youtube.com/watch?v=ibzlEQmgPPY',t:'video'}],tags:['pgvector','Supabase','conversation storage','metadata filtering'],p:'high',dep:'sw3'},
+{id:'sw15',t:'Containerized AI deployment',d:'Docker + GPU, model caching, Modal/Fly.io, health checks, cold start.',r:[{n:'▶️ Docker for ML',u:'https://www.youtube.com/watch?v=eBr3xABzmhA',t:'video'},{n:'Modal Docs',u:'https://modal.com/docs',t:'docs'}],tags:['Docker','GPU containers','Modal','deployment','cold start'],p:'medium'},
 ]},
-{id:'finetuning',t:'Phase 3: Fine-tuning & Adaptation',s:'Go from using models to adapting them for specific tasks',c:'#a78bfa',items:[
-{id:'ft1',t:'LoRA & QLoRA mechanics',d:'Low-rank adaptation: why freezing most weights and training small rank-decomposition matrices works. Rank selection, target modules, QLoRA for consumer GPUs, adapter merging strategies.',r:[{n:'▶️ FreeCodeCamp: 12hr Fine-tuning Course',u:'https://www.youtube.com/watch?v=pFdxJGbniMs',t:'video'},{n:'▶️ DeepLearning.AI: Finetuning LLMs',u:'https://www.deeplearning.ai/short-courses/finetuning-large-language-models/',t:'video'},{n:'HF PEFT Docs',u:'https://huggingface.co/docs/peft',t:'docs'},{n:'Raschka: Build a LLM (Book)',u:'https://www.manning.com/books/build-a-large-language-model-from-scratch',t:'book'},{n:'Labonne: LLM Course',u:'https://github.com/mlabonne/llm-course',t:'course'}],tags:['LoRA','QLoRA','PEFT','adapter merging','rank selection','low-rank'],p:'critical'},
-{id:'ft2',t:'SFT pipeline end-to-end',d:'Supervised fine-tuning from data to deployed model: instruction formats (Alpaca/ShareGPT/ChatML), TRL SFTTrainer, checkpointing, validation loss, and when to stop training.',r:[{n:'▶️ Labonne: Fine-tune Llama 3.1',u:'https://www.youtube.com/watch?v=pK8u4QfdLx0',t:'video'},{n:'HF TRL Docs',u:'https://huggingface.co/docs/trl',t:'docs'},{n:'Labonne Blog: Fine-tune Guide',u:'https://mlabonne.github.io/blog/posts/2024-07-29_Finetune_Llama31.html',t:'blog'},{n:'▶️ Trelis: SFT Walkthrough',u:'https://www.youtube.com/watch?v=pK2kptJE-HQ',t:'video'}],tags:['SFT','instruction tuning','TRL','ChatML','training loop','checkpointing'],p:'critical'},
-{id:'ft3',t:'Data curation for fine-tuning',d:'Most underrated skill: filtering, deduplication, decontamination, synthetic data generation with stronger models, quality scoring heuristics.',r:[{n:'Lilianweng: Training Data',u:'https://lilianweng.github.io/posts/2024-02-05-training-data/',t:'blog'},{n:'Argilla Docs',u:'https://docs.argilla.io',t:'docs'},{n:'▶️ HF: Data for Fine-tuning',u:'https://www.youtube.com/watch?v=VptKz0PInWo',t:'video'}],tags:['data curation','decontamination','synthetic data','quality filtering','Argilla'],p:'high'},
-{id:'ft4',t:'Unsloth for efficient training',d:'2x faster LoRA training, 70% less memory. Practical for GPU-constrained setups. Supports Llama, Mistral, Gemma, Phi.',r:[{n:'▶️ Unsloth Tutorial',u:'https://www.youtube.com/watch?v=jLKECjfsaQg',t:'video'},{n:'Unsloth GitHub',u:'https://github.com/unslothai/unsloth',t:'code'},{n:'Unsloth Notebooks',u:'https://github.com/unslothai/unsloth#-finetune-for-free',t:'code'}],tags:['Unsloth','efficient training','memory optimization','free Colab'],p:'medium'},
-{id:'ft5',t:'When to fine-tune vs. prompt vs. RAG',d:'Decision framework: cost, latency, data availability, task complexity, maintenance burden, and the hybrid approaches that actually work in production.',r:[{n:'Chip Huyen: AI Engineering (Book)',u:'https://www.oreilly.com/library/view/ai-engineering/9781098166298/',t:'book'},{n:'Raschka: Finetuning LLMs',u:'https://magazine.sebastianraschka.com/p/finetuning-llms',t:'blog'},{n:'▶️ Activeloop: LLM Training Course (free)',u:'https://learn.activeloop.ai/courses/llms',t:'video'}],tags:['decision framework','cost analysis','RAG vs FT vs prompt','tradeoffs'],p:'critical'},
+{id:'finetuning',t:'Phase 3: Fine-tuning',s:'Adapt models for specific tasks',c:'#a78bfa',items:[
+{id:'ft1',t:'LoRA & QLoRA mechanics',d:'Low-rank adaptation, rank selection, QLoRA for consumer GPUs, adapter merging.',r:[{n:'▶️ FreeCodeCamp: 12hr Fine-tune',u:'https://www.youtube.com/watch?v=pFdxJGbniMs',t:'video'},{n:'▶️ DeepLearning.AI: Finetuning',u:'https://www.deeplearning.ai/short-courses/finetuning-large-language-models/',t:'video'},{n:'HF PEFT',u:'https://huggingface.co/docs/peft',t:'docs'},{n:'Raschka: Build a LLM',u:'https://www.manning.com/books/build-a-large-language-model-from-scratch',t:'book'}],tags:['LoRA','QLoRA','PEFT','adapter merging','rank selection'],p:'critical',dep:'f1'},
+{id:'ft2',t:'SFT pipeline',d:'Instruction formats, TRL SFTTrainer, checkpointing, validation loss.',r:[{n:'▶️ Labonne: Fine-tune Llama',u:'https://www.youtube.com/watch?v=pK8u4QfdLx0',t:'video'},{n:'HF TRL',u:'https://huggingface.co/docs/trl',t:'docs'}],tags:['SFT','instruction tuning','TRL','ChatML'],p:'critical',dep:'ft1'},
+{id:'ft3',t:'Data curation',d:'Filtering, dedup, decontamination, synthetic data, quality scoring.',r:[{n:'Lilianweng: Training Data',u:'https://lilianweng.github.io/posts/2024-02-05-training-data/',t:'blog'},{n:'Argilla',u:'https://docs.argilla.io',t:'docs'}],tags:['data curation','decontamination','synthetic data','filtering'],p:'high'},
+{id:'ft4',t:'Unsloth',d:'2x faster LoRA, 70% less memory. Practical for consumer GPUs.',r:[{n:'▶️ Unsloth Tutorial',u:'https://www.youtube.com/watch?v=jLKECjfsaQg',t:'video'},{n:'GitHub',u:'https://github.com/unslothai/unsloth',t:'code'}],tags:['Unsloth','efficient training','memory optimization'],p:'medium'},
+{id:'ft5',t:'Fine-tune vs prompt vs RAG',d:'Decision framework: cost, latency, data needs, maintenance.',r:[{n:'Chip Huyen: AI Engineering',u:'https://www.oreilly.com/library/view/ai-engineering/9781098166298/',t:'book'},{n:'Raschka: Finetuning LLMs',u:'https://magazine.sebastianraschka.com/p/finetuning-llms',t:'blog'}],tags:['decision framework','RAG vs FT vs prompt'],p:'critical'},
 ]},
-{id:'inference',t:'Phase 4: Inference & Serving',s:'Deploy models efficiently — the bridge between demo and product',c:'#60a5fa',items:[
-{id:'i1',t:'Quantization: GPTQ, AWQ, GGUF',d:'Shrinking models from FP16 to INT4/INT8 with minimal quality loss. Weight-only vs activation quantization, practical format comparison.',r:[{n:'Labonne: Quantization Guide',u:'https://mlabonne.github.io/blog/posts/2024-06-20-Quantization.html',t:'blog'},{n:'▶️ Trelis: Quantization Explained',u:'https://www.youtube.com/watch?v=GufQYkMkdpw',t:'video'},{n:'HF Quantization Docs',u:'https://huggingface.co/docs/transformers/quantization/overview',t:'docs'}],tags:['GPTQ','AWQ','GGUF','INT4','INT8','post-training quant'],p:'critical'},
-{id:'i2',t:'vLLM & PagedAttention',d:'The serving engine that changed LLM deployment economics. PagedAttention manages KV-cache like virtual memory, continuous batching maximizes GPU utilization.',r:[{n:'▶️ vLLM Talk (SOSP)',u:'https://www.youtube.com/watch?v=80bIUggRJf4',t:'video'},{n:'vLLM Docs',u:'https://docs.vllm.ai',t:'docs'},{n:'PagedAttention Paper',u:'https://arxiv.org/abs/2309.06180',t:'paper'}],tags:['vLLM','PagedAttention','continuous batching','serving','GPU utilization'],p:'critical'},
-{id:'i3',t:'KV-cache mechanics',d:'What KV-cache stores (K/V tensors per layer per head for every past token), why it\'s the inference memory bottleneck, prefix caching for shared system prompts.',r:[{n:'Alammar: Illustrated GPT-2',u:'https://jalammar.github.io/illustrated-gpt2/',t:'blog'},{n:'vLLM Prefix Caching',u:'https://docs.vllm.ai/en/latest/features/automatic_prefix_caching.html',t:'docs'}],tags:['KV-cache','memory bottleneck','prefix caching','eviction'],p:'high'},
-{id:'i4',t:'Speculative decoding',d:'Draft model generates candidate tokens fast, target model verifies in parallel — 2-3x speedup without quality loss.',r:[{n:'HF: Assisted Generation',u:'https://huggingface.co/blog/assisted-generation',t:'blog'},{n:'Leviathan et al.',u:'https://arxiv.org/abs/2211.17192',t:'paper'}],tags:['speculative decoding','draft model','accept-reject'],p:'medium'},
-{id:'i5',t:'Serving frameworks comparison',d:'vLLM vs TGI vs TensorRT-LLM vs Ollama: throughput, latency, ease of use, GPU support, production readiness.',r:[{n:'▶️ AI Jason: Serving Comparison',u:'https://www.youtube.com/watch?v=mYRqvB1_gRk',t:'video'},{n:'Labonne: LLM Course',u:'https://github.com/mlabonne/llm-course',t:'course'},{n:'TensorRT-LLM Docs',u:'https://nvidia.github.io/TensorRT-LLM/',t:'docs'}],tags:['TGI','Ollama','TensorRT-LLM','benchmarking','framework choice'],p:'high'},
+{id:'inference',t:'Phase 4: Inference & Serving',s:'Deploy models efficiently',c:'#60a5fa',items:[
+{id:'i1',t:'Quantization: GPTQ, AWQ, GGUF',d:'Post-training quant, INT4/INT8, format comparison.',r:[{n:'Labonne: Quant Guide',u:'https://mlabonne.github.io/blog/posts/2024-06-20-Quantization.html',t:'blog'},{n:'▶️ Trelis: Quantization',u:'https://www.youtube.com/watch?v=GufQYkMkdpw',t:'video'},{n:'HF Quant Docs',u:'https://huggingface.co/docs/transformers/quantization/overview',t:'docs'}],tags:['GPTQ','AWQ','GGUF','INT4','INT8'],p:'critical'},
+{id:'i2',t:'vLLM & PagedAttention',d:'PagedAttention, continuous batching, serving architecture.',r:[{n:'▶️ vLLM Talk',u:'https://www.youtube.com/watch?v=80bIUggRJf4',t:'video'},{n:'vLLM Docs',u:'https://docs.vllm.ai',t:'docs'},{n:'Paper',u:'https://arxiv.org/abs/2309.06180',t:'paper'}],tags:['vLLM','PagedAttention','continuous batching','serving'],p:'critical'},
+{id:'i3',t:'KV-cache mechanics',d:'What it stores, why it\'s the bottleneck, prefix caching, eviction.',r:[{n:'Alammar: Illustrated GPT-2',u:'https://jalammar.github.io/illustrated-gpt2/',t:'blog'},{n:'vLLM Prefix Caching',u:'https://docs.vllm.ai/en/latest/features/automatic_prefix_caching.html',t:'docs'}],tags:['KV-cache','memory bottleneck','prefix caching'],p:'high'},
+{id:'i4',t:'Speculative decoding',d:'Draft model + verify. 2-3x speedup, no quality loss.',r:[{n:'HF Assisted Generation',u:'https://huggingface.co/blog/assisted-generation',t:'blog'},{n:'Paper',u:'https://arxiv.org/abs/2211.17192',t:'paper'}],tags:['speculative decoding','draft model'],p:'medium'},
+{id:'i5',t:'Serving frameworks compared',d:'vLLM vs TGI vs TensorRT-LLM vs Ollama.',r:[{n:'▶️ Serving Comparison',u:'https://www.youtube.com/watch?v=mYRqvB1_gRk',t:'video'},{n:'TensorRT-LLM',u:'https://nvidia.github.io/TensorRT-LLM/',t:'docs'}],tags:['TGI','Ollama','TensorRT-LLM','benchmarking'],p:'high'},
 ]},
-{id:'evals',t:'Phase 5: Evaluation & Testing',s:'Highest-value, most-undertaught skill in applied AI',c:'#f472b6',items:[
-{id:'e1',t:'Custom eval design',d:'Task-specific evaluations: golden datasets, scoring rubrics (binary/Likert/pairwise), automated vs human eval, eval-driven development (write evals before changing prompts).',r:[{n:'Hamel Husain: Your AI Product Needs Evals',u:'https://hamel.dev/blog/posts/evals/',t:'blog'},{n:'Anthropic Eval Guide',u:'https://docs.anthropic.com/en/docs/build-with-claude/develop-tests',t:'docs'},{n:'▶️ DeepLearning.AI: Automated Testing',u:'https://www.deeplearning.ai/short-courses/automated-testing-llmops/',t:'video'},{n:'▶️ Braintrust: Building Evals',u:'https://www.youtube.com/watch?v=QnRMnIks3i8',t:'video'}],tags:['custom evals','golden datasets','rubrics','eval-driven dev'],p:'critical'},
-{id:'e2',t:'LLM-as-judge patterns',d:'Stronger model grades weaker outputs: single-point scoring, pairwise comparison, bias mitigation (position/verbosity bias), multi-judge ensembles.',r:[{n:'LLM-as-Judge Paper',u:'https://arxiv.org/abs/2306.05685',t:'paper'},{n:'Anthropic Eval Docs',u:'https://docs.anthropic.com/en/docs/build-with-claude/develop-tests',t:'docs'},{n:'▶️ Databricks: LLM Evaluation',u:'https://www.youtube.com/watch?v=sKe2p3UbXvg',t:'video'}],tags:['LLM-as-judge','pairwise eval','bias correction','multi-judge'],p:'critical'},
-{id:'e3',t:'Hallucination detection',d:'SelfCheckGPT (self-consistency), factual grounding against retrieved docs, citation verification, HHEM models, confidence calibration.',r:[{n:'SelfCheckGPT Paper',u:'https://arxiv.org/abs/2303.08896',t:'paper'},{n:'Vectara HHEM',u:'https://huggingface.co/vectara/hallucination_evaluation_model',t:'docs'}],tags:['hallucination','SelfCheckGPT','HHEM','grounding','citation'],p:'high'},
-{id:'e4',t:'Evals in CI/CD',d:'Run evals on every prompt change. Promptfoo config files, threshold pass/fail, Braintrust + GitHub Actions integration.',r:[{n:'Promptfoo Docs',u:'https://www.promptfoo.dev/',t:'docs'},{n:'Braintrust Docs',u:'https://www.braintrust.dev/docs',t:'docs'}],tags:['CI/CD evals','Promptfoo','Braintrust','regression','automation'],p:'high'},
-{id:'e5',t:'Benchmark literacy',d:'MMLU, HumanEval, GPQA, Arena ELO — what each measures, their limits, and how to read leaderboards without being fooled by benchmark gaming.',r:[{n:'LMSYS Chatbot Arena',u:'https://lmarena.ai/',t:'docs'},{n:'▶️ Yannic Kilcher: Benchmarks',u:'https://www.youtube.com/watch?v=kRkFhkHq0Vc',t:'video'},{n:'Papers With Code',u:'https://paperswithcode.com/',t:'docs'}],tags:['MMLU','HumanEval','GPQA','leaderboards','Arena ELO'],p:'medium'},
+{id:'evals',t:'Phase 5: Evaluation',s:'Most valued, least taught skill',c:'#f472b6',items:[
+{id:'e1',t:'Custom eval design',d:'Golden datasets, rubrics, automated vs human eval, eval-driven dev.',r:[{n:'Hamel Husain: Evals',u:'https://hamel.dev/blog/posts/evals/',t:'blog'},{n:'Anthropic Eval Guide',u:'https://docs.anthropic.com/en/docs/build-with-claude/develop-tests',t:'docs'},{n:'▶️ DeepLearning.AI: Automated Testing',u:'https://www.deeplearning.ai/short-courses/automated-testing-llmops/',t:'video'}],tags:['custom evals','golden datasets','rubrics'],p:'critical'},
+{id:'e2',t:'LLM-as-judge',d:'Stronger model grades weaker, pairwise comparison, bias correction.',r:[{n:'Paper',u:'https://arxiv.org/abs/2306.05685',t:'paper'},{n:'▶️ Databricks: LLM Eval',u:'https://www.youtube.com/watch?v=sKe2p3UbXvg',t:'video'}],tags:['LLM-as-judge','pairwise eval','bias correction'],p:'critical'},
+{id:'e3',t:'Hallucination detection',d:'SelfCheckGPT, factual grounding, HHEM, citation verification.',r:[{n:'SelfCheckGPT',u:'https://arxiv.org/abs/2303.08896',t:'paper'},{n:'Vectara HHEM',u:'https://huggingface.co/vectara/hallucination_evaluation_model',t:'docs'}],tags:['hallucination','SelfCheckGPT','HHEM','grounding'],p:'high'},
+{id:'e4',t:'Evals in CI/CD',d:'Promptfoo, Braintrust, threshold pass/fail, GitHub Actions.',r:[{n:'Promptfoo',u:'https://www.promptfoo.dev/',t:'docs'},{n:'Braintrust',u:'https://www.braintrust.dev/docs',t:'docs'}],tags:['CI/CD evals','Promptfoo','Braintrust'],p:'high'},
+{id:'e5',t:'Benchmark literacy',d:'MMLU, HumanEval, GPQA, Arena ELO — what they measure and their limits.',r:[{n:'LMSYS Arena',u:'https://lmarena.ai/',t:'docs'},{n:'▶️ Yannic: Benchmarks',u:'https://www.youtube.com/watch?v=kRkFhkHq0Vc',t:'video'}],tags:['MMLU','HumanEval','GPQA','leaderboards'],p:'medium'},
 ]},
-{id:'rag',t:'Phase 6: RAG at Depth',s:'You built RAG with Qdrant — now master failure modes and advanced patterns',c:'#34d399',items:[
-{id:'r1',t:'Chunking strategies',d:'Fixed-size, semantic, recursive, page-level, parent-document retriever. Each has different retrieval quality tradeoffs.',r:[{n:'▶️ Greg Kamradt: Chunking',u:'https://www.youtube.com/watch?v=8OJC21T2SL4',t:'video'},{n:'LangChain Text Splitters',u:'https://python.langchain.com/docs/concepts/text_splitters/',t:'docs'},{n:'▶️ LangChain: RAG From Scratch (chunking)',u:'https://www.youtube.com/watch?v=sVcwVQRHIc8',t:'video'}],tags:['chunking','semantic split','parent-document','recursive','page-level'],p:'critical'},
-{id:'r2',t:'Hybrid search & reranking',d:'Dense embeddings + BM25 sparse search + reciprocal rank fusion. Then rerank top-K with cross-encoders or ColBERT for precision. Two-stage retrieval is the production standard.',r:[{n:'▶️ Weaviate: Hybrid Search',u:'https://www.youtube.com/watch?v=lpdN3aw-yTg',t:'video'},{n:'Qdrant: Hybrid Search',u:'https://qdrant.tech/articles/hybrid-search/',t:'blog'},{n:'Cohere Rerank Docs',u:'https://docs.cohere.com/docs/reranking',t:'docs'},{n:'ColBERT v2 Paper',u:'https://arxiv.org/abs/2112.01488',t:'paper'}],tags:['hybrid search','BM25','RRF','reranking','ColBERT','cross-encoder'],p:'critical'},
-{id:'r3',t:'Query decomposition & routing',d:'Complex queries need multi-step retrieval: sub-queries, query rewriting, semantic routing to specialized indices.',r:[{n:'▶️ LangChain: RAG From Scratch (query)',u:'https://www.youtube.com/watch?v=sVcwVQRHIc8',t:'video'},{n:'LangChain Multi-Query',u:'https://python.langchain.com/docs/how_to/MultiQueryRetriever/',t:'docs'},{n:'LlamaIndex Router',u:'https://docs.llamaindex.ai/',t:'docs'}],tags:['multi-query','query rewrite','routing','decomposition'],p:'high'},
-{id:'r4',t:'Agentic RAG & CRAG',d:'Agent decides when/how to retrieve, iterates if quality is poor, self-grades relevance. Corrective RAG (CRAG) adds a quality gate.',r:[{n:'▶️ LangGraph: Agentic RAG Tutorial',u:'https://www.youtube.com/watch?v=D-mRbEzgiHk',t:'video'},{n:'LangGraph RAG Agent',u:'https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_agentic_rag/',t:'docs'}],tags:['agentic RAG','CRAG','iterative retrieval','self-correction'],p:'high'},
-{id:'r5',t:'Long context vs RAG tradeoffs',d:'When to stuff context vs retrieve: cost modeling, "Lost in the Middle" effect, needle-in-haystack tests, emerging hybrid approach.',r:[{n:'Lost in the Middle Paper',u:'https://arxiv.org/abs/2307.03172',t:'paper'},{n:'Anthropic Long Context Tips',u:'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips',t:'docs'}],tags:['long context','context stuffing','needle-in-haystack'],p:'medium'},
+{id:'rag',t:'Phase 6: RAG at Depth',s:'Master failure modes and advanced patterns',c:'#34d399',items:[
+{id:'r1',t:'Chunking strategies',d:'Fixed, semantic, recursive, page-level, parent-document.',r:[{n:'▶️ Kamradt: Chunking',u:'https://www.youtube.com/watch?v=8OJC21T2SL4',t:'video'},{n:'LangChain Splitters',u:'https://python.langchain.com/docs/concepts/text_splitters/',t:'docs'}],tags:['chunking','semantic split','parent-document','recursive'],p:'critical',dep:'sw4'},
+{id:'r2',t:'Hybrid search & reranking',d:'Dense+BM25+RRF. Rerank with cross-encoders or ColBERT.',r:[{n:'▶️ Weaviate: Hybrid',u:'https://www.youtube.com/watch?v=lpdN3aw-yTg',t:'video'},{n:'Qdrant Hybrid',u:'https://qdrant.tech/articles/hybrid-search/',t:'blog'},{n:'Cohere Rerank',u:'https://docs.cohere.com/docs/reranking',t:'docs'}],tags:['hybrid search','BM25','RRF','reranking','ColBERT'],p:'critical',dep:'r1'},
+{id:'r3',t:'Query decomposition & routing',d:'Sub-queries, rewriting, semantic routing to specialized indices.',r:[{n:'▶️ RAG From Scratch',u:'https://www.youtube.com/watch?v=sVcwVQRHIc8',t:'video'},{n:'LangChain Multi-Query',u:'https://python.langchain.com/docs/how_to/MultiQueryRetriever/',t:'docs'}],tags:['multi-query','query rewrite','routing'],p:'high'},
+{id:'r4',t:'Agentic RAG & CRAG',d:'Agent-driven retrieval, iterative, self-correcting RAG.',r:[{n:'▶️ LangGraph Agentic RAG',u:'https://www.youtube.com/watch?v=D-mRbEzgiHk',t:'video'},{n:'LangGraph Docs',u:'https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_agentic_rag/',t:'docs'}],tags:['agentic RAG','CRAG','iterative retrieval'],p:'high',dep:'r2'},
+{id:'r5',t:'Long context vs RAG',d:'Cost modeling, Lost in the Middle, needle-in-haystack, hybrid approach.',r:[{n:'Paper',u:'https://arxiv.org/abs/2307.03172',t:'paper'},{n:'Anthropic Tips',u:'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips',t:'docs'}],tags:['long context','needle-in-haystack'],p:'medium'},
 ]},
-{id:'agents',t:'Phase 7: Agents in Production',s:'The highest-leverage zone for Applied AI in 2026',c:'#f5a623',items:[
-{id:'a1',t:'ReAct pattern & agent loop',d:'Reasoning + Acting: thought → action → observation loop. The foundational paradigm.',r:[{n:'▶️ DeepLearning.AI: AI Agents in LangGraph',u:'https://www.deeplearning.ai/short-courses/ai-agents-in-langgraph/',t:'video'},{n:'ReAct Paper',u:'https://arxiv.org/abs/2210.03629',t:'paper'},{n:'Lilian Weng: LLM Agents',u:'https://lilianweng.github.io/posts/2023-06-23-agent/',t:'blog'}],tags:['ReAct','thought-action-observation','agent loop','planning'],p:'critical'},
-{id:'a2',t:'Function calling & tool use APIs',d:'OpenAI and Anthropic tool use: JSON schema definitions, model tool selection, parallel calls, error handling patterns.',r:[{n:'▶️ Anthropic: Tool Use Deep Dive',u:'https://www.youtube.com/watch?v=d5CEl2FqBJc',t:'video'},{n:'Anthropic Tool Use Docs',u:'https://docs.anthropic.com/en/docs/build-with-claude/tool-use',t:'docs'},{n:'OpenAI Function Calling',u:'https://platform.openai.com/docs/guides/function-calling',t:'docs'}],tags:['function calling','tool use','API design','JSON schemas','parallel'],p:'critical'},
-{id:'a3',t:'MCP (Model Context Protocol)',d:'USB-C for AI: universal AI ↔ tool standard. Architecture (client/server/transport), building MCP servers, 2026 roadmap, security.',r:[{n:'▶️ Anthropic: What is MCP',u:'https://www.youtube.com/watch?v=kQmXtrmQ5Zg',t:'video'},{n:'MCP Official Docs',u:'https://modelcontextprotocol.io/',t:'docs'},{n:'MCP 2026 Roadmap',u:'https://blog.modelcontextprotocol.io/posts/2026-mcp-roadmap/',t:'blog'},{n:'Anthropic MCP Intro',u:'https://www.anthropic.com/news/model-context-protocol',t:'blog'}],tags:['MCP','tool integration','servers','transports','protocol','security'],p:'critical'},
-{id:'a4',t:'Structured outputs & Instructor',d:'Force LLM output to match JSON schemas. OpenAI Structured Outputs, Instructor + Pydantic + retry, Outlines for grammar-guided token generation.',r:[{n:'▶️ Jason Liu: Instructor',u:'https://www.youtube.com/watch?v=yj-wSRJwrrc',t:'video'},{n:'Instructor Docs',u:'https://python.useinstructor.com/',t:'docs'},{n:'OpenAI Structured Outputs',u:'https://platform.openai.com/docs/guides/structured-outputs',t:'docs'},{n:'Outlines GitHub',u:'https://github.com/outlines-dev/outlines',t:'code'}],tags:['structured outputs','Instructor','Outlines','JSON mode','Pydantic','constrained'],p:'critical'},
-{id:'a5',t:'Guardrails: defense in depth',d:'3-layer defense — Input (PII scan, injection detect, topic filter), Action (policy-as-code, HITL, budget caps), Output (hallucination, toxicity, PII scrub).',r:[{n:'▶️ NeMo Guardrails Tutorial',u:'https://www.youtube.com/watch?v=EfPQMuoSAUM',t:'video'},{n:'Guardrails AI Docs',u:'https://www.guardrailsai.com/docs',t:'docs'},{n:'NVIDIA NeMo Guardrails',u:'https://github.com/NVIDIA/NeMo-Guardrails',t:'code'},{n:'OWASP LLM Top 10',u:'https://owasp.org/www-project-top-10-for-large-language-model-applications/',t:'docs'}],tags:['guardrails','PII','prompt injection','policy-as-code','OWASP','NeMo'],p:'critical'},
-{id:'a6',t:'Agent memory architecture',d:'Working memory (sliding window, summarization), long-term (vector + Mem0), episodic vs semantic, context compression.',r:[{n:'Lilian Weng: LLM Agents',u:'https://lilianweng.github.io/posts/2023-06-23-agent/',t:'blog'},{n:'LangGraph Memory',u:'https://langchain-ai.github.io/langgraph/concepts/memory/',t:'docs'},{n:'Mem0 Docs',u:'https://docs.mem0.ai/',t:'docs'}],tags:['agent memory','Mem0','context compression','episodic','semantic'],p:'high'},
-{id:'a7',t:'Observability & tracing',d:'Distributed tracing for multi-step agents. LangSmith, Arize Phoenix, Langfuse — debug production agents.',r:[{n:'▶️ LangSmith Walkthrough',u:'https://www.youtube.com/watch?v=tFXm5ijah98',t:'video'},{n:'Arize Phoenix',u:'https://docs.arize.com/phoenix',t:'docs'},{n:'Langfuse',u:'https://langfuse.com/docs',t:'docs'},{n:'LangSmith Docs',u:'https://docs.smith.langchain.com/',t:'docs'}],tags:['tracing','LangSmith','Phoenix','Langfuse','debugging','observability'],p:'high'},
-{id:'a8',t:'Multi-agent patterns',d:'Supervisor, hierarchical, peer-to-peer, governance agents. When single vs multi-agent.',r:[{n:'▶️ LangGraph: Multi-Agent',u:'https://www.youtube.com/watch?v=9KqC-eb99Ks',t:'video'},{n:'AutoGen Docs',u:'https://microsoft.github.io/autogen/',t:'docs'},{n:'CrewAI Docs',u:'https://docs.crewai.com/',t:'docs'}],tags:['multi-agent','supervisor','CrewAI','AutoGen','governance'],p:'medium'},
-{id:'a9',t:'Agent security surface',d:'Indirect prompt injection, confused deputy, tool-chain attacks, least-privilege, toxic flow analysis, MCP security.',r:[{n:'Simon Willison: Prompt Injection',u:'https://simonwillison.net/series/prompt-injection/',t:'blog'},{n:'OWASP LLM Top 10',u:'https://owasp.org/www-project-top-10-for-large-language-model-applications/',t:'docs'},{n:'▶️ PortSwigger: LLM Attacks',u:'https://www.youtube.com/watch?v=SvBR0tN9H2k',t:'video'}],tags:['prompt injection','confused deputy','least privilege','toxic flow'],p:'high'},
+{id:'agents',t:'Phase 7: Agents in Production',s:'Highest-leverage zone for 2026',c:'#f5a623',items:[
+{id:'a1',t:'ReAct & agent loop',d:'Thought→action→observation. Foundational paradigm.',r:[{n:'▶️ DeepLearning.AI: Agents',u:'https://www.deeplearning.ai/short-courses/ai-agents-in-langgraph/',t:'video'},{n:'ReAct Paper',u:'https://arxiv.org/abs/2210.03629',t:'paper'},{n:'Lilian Weng: Agents',u:'https://lilianweng.github.io/posts/2023-06-23-agent/',t:'blog'}],tags:['ReAct','agent loop','planning'],p:'critical',dep:'sw5'},
+{id:'a2',t:'Function calling & tool use',d:'JSON schemas, tool selection, parallel calls, error handling.',r:[{n:'▶️ Anthropic Tool Use',u:'https://www.youtube.com/watch?v=d5CEl2FqBJc',t:'video'},{n:'Anthropic Docs',u:'https://docs.anthropic.com/en/docs/build-with-claude/tool-use',t:'docs'},{n:'OpenAI Docs',u:'https://platform.openai.com/docs/guides/function-calling',t:'docs'}],tags:['function calling','tool use','JSON schemas'],p:'critical',dep:'sw11'},
+{id:'a3',t:'MCP (Model Context Protocol)',d:'Universal AI↔tool standard. Architecture, building servers, 2026 roadmap.',r:[{n:'▶️ What is MCP',u:'https://www.youtube.com/watch?v=kQmXtrmQ5Zg',t:'video'},{n:'MCP Docs',u:'https://modelcontextprotocol.io/',t:'docs'},{n:'2026 Roadmap',u:'https://blog.modelcontextprotocol.io/posts/2026-mcp-roadmap/',t:'blog'}],tags:['MCP','tool integration','servers','transports'],p:'critical',dep:'a2'},
+{id:'a4',t:'Structured outputs & Instructor',d:'JSON schemas, Instructor+Pydantic, Outlines for grammar-guided generation.',r:[{n:'▶️ Instructor',u:'https://www.youtube.com/watch?v=yj-wSRJwrrc',t:'video'},{n:'Instructor Docs',u:'https://python.useinstructor.com/',t:'docs'},{n:'Outlines',u:'https://github.com/outlines-dev/outlines',t:'code'}],tags:['structured outputs','Instructor','Outlines','Pydantic'],p:'critical'},
+{id:'a5',t:'Guardrails: defense in depth',d:'3-layer: Input (PII, injection), Action (policy, HITL), Output (hallucination, toxicity).',r:[{n:'▶️ NeMo Guardrails',u:'https://www.youtube.com/watch?v=EfPQMuoSAUM',t:'video'},{n:'Guardrails AI',u:'https://www.guardrailsai.com/docs',t:'docs'},{n:'OWASP LLM Top 10',u:'https://owasp.org/www-project-top-10-for-large-language-model-applications/',t:'docs'}],tags:['guardrails','PII','prompt injection','OWASP'],p:'critical',dep:'a2'},
+{id:'a6',t:'Agent memory architecture',d:'Working memory, long-term (Mem0), episodic vs semantic, compression.',r:[{n:'Lilian Weng: Agents',u:'https://lilianweng.github.io/posts/2023-06-23-agent/',t:'blog'},{n:'LangGraph Memory',u:'https://langchain-ai.github.io/langgraph/concepts/memory/',t:'docs'},{n:'Mem0',u:'https://docs.mem0.ai/',t:'docs'}],tags:['agent memory','Mem0','episodic','semantic'],p:'high',dep:'sw10'},
+{id:'a7',t:'Observability & tracing',d:'LangSmith, Arize Phoenix, Langfuse — debug production agents.',r:[{n:'▶️ LangSmith',u:'https://www.youtube.com/watch?v=tFXm5ijah98',t:'video'},{n:'Phoenix',u:'https://docs.arize.com/phoenix',t:'docs'},{n:'Langfuse',u:'https://langfuse.com/docs',t:'docs'}],tags:['tracing','LangSmith','Phoenix','Langfuse'],p:'high'},
+{id:'a8',t:'Multi-agent patterns',d:'Supervisor, hierarchical, peer-to-peer, governance agents.',r:[{n:'▶️ Multi-Agent',u:'https://www.youtube.com/watch?v=9KqC-eb99Ks',t:'video'},{n:'AutoGen',u:'https://microsoft.github.io/autogen/',t:'docs'},{n:'CrewAI',u:'https://docs.crewai.com/',t:'docs'}],tags:['multi-agent','supervisor','CrewAI','AutoGen'],p:'medium'},
+{id:'a9',t:'Agent security',d:'Indirect injection, confused deputy, tool-chain attacks, least privilege.',r:[{n:'Willison: Injection',u:'https://simonwillison.net/series/prompt-injection/',t:'blog'},{n:'OWASP',u:'https://owasp.org/www-project-top-10-for-large-language-model-applications/',t:'docs'}],tags:['prompt injection','confused deputy','least privilege'],p:'high',dep:'a5'},
 ]},
-{id:'llmops',t:'Phase 8: LLMOps & Deployment',s:'Production infra — monitoring, versioning, cost control',c:'#38bdf8',items:[
-{id:'o1',t:'Prompt versioning & A/B testing',d:'Track prompts like code, diff, rollback on drops, A/B test variants in prod.',r:[{n:'Humanloop Docs',u:'https://humanloop.com/docs',t:'docs'},{n:'LangSmith Hub',u:'https://smith.langchain.com/hub',t:'docs'}],tags:['prompt versioning','A/B testing','rollback'],p:'high'},
-{id:'o2',t:'Experiment tracking: W&B + MLflow',d:'Log experiments: model configs, eval scores, cost, latency. Compare runs side-by-side.',r:[{n:'▶️ W&B: LLM Course (free)',u:'https://www.wandb.courses/',t:'video'},{n:'W&B Docs',u:'https://docs.wandb.ai/guides/',t:'docs'},{n:'MLflow LLM Docs',u:'https://mlflow.org/docs/latest/llms/index.html',t:'docs'}],tags:['W&B','MLflow','experiment tracking','comparison'],p:'high'},
-{id:'o3',t:'Cost tracking & model routing',d:'Per-request cost, intelligent routing (cheap for easy, expensive for hard), response caching, budget enforcement.',r:[{n:'Helicone Docs',u:'https://www.helicone.ai/docs',t:'docs'},{n:'LiteLLM Docs',u:'https://docs.litellm.ai/',t:'docs'}],tags:['cost tracking','model routing','caching','LiteLLM','Helicone'],p:'high'},
-{id:'o4',t:'Monitoring & drift detection',d:'Track output quality in production, detect distribution shift, alert on regressions, quality dashboards.',r:[{n:'Arize Docs',u:'https://docs.arize.com/',t:'docs'},{n:'Evidently AI',u:'https://www.evidentlyai.com/',t:'docs'}],tags:['monitoring','drift','alerting','dashboards'],p:'medium'},
+{id:'llmops',t:'Phase 8: LLMOps',s:'Monitoring, versioning, cost control',c:'#38bdf8',items:[
+{id:'o1',t:'Prompt versioning & A/B testing',d:'Track prompts like code, diff, rollback, A/B test variants.',r:[{n:'Humanloop',u:'https://humanloop.com/docs',t:'docs'},{n:'LangSmith Hub',u:'https://smith.langchain.com/hub',t:'docs'}],tags:['prompt versioning','A/B testing','rollback'],p:'high'},
+{id:'o2',t:'Experiment tracking',d:'W&B, MLflow for LLM experiments. Compare runs.',r:[{n:'▶️ W&B Course',u:'https://www.wandb.courses/',t:'video'},{n:'W&B Docs',u:'https://docs.wandb.ai/guides/',t:'docs'},{n:'MLflow',u:'https://mlflow.org/docs/latest/llms/index.html',t:'docs'}],tags:['W&B','MLflow','experiment tracking'],p:'high'},
+{id:'o3',t:'Cost tracking & routing',d:'Per-request cost, model routing, caching, budget enforcement.',r:[{n:'Helicone',u:'https://www.helicone.ai/docs',t:'docs'},{n:'LiteLLM',u:'https://docs.litellm.ai/',t:'docs'}],tags:['cost tracking','model routing','LiteLLM','Helicone'],p:'high'},
+{id:'o4',t:'Monitoring & drift',d:'Output quality, distribution shift, alert on regressions.',r:[{n:'Arize',u:'https://docs.arize.com/',t:'docs'},{n:'Evidently',u:'https://www.evidentlyai.com/',t:'docs'}],tags:['monitoring','drift','alerting'],p:'medium'},
 ]},
-{id:'fluency',t:'Phase 9: Conversational Fluency',s:'Whiteboard-level — explain to an interviewer, don\'t build from scratch',c:'#c084fc',items:[
-{id:'l1',t:'Alignment: RLHF → DPO → KTO → ORPO',d:'Evolution from complex PPO-based RLHF with reward models, to simpler DPO (direct preference pairs), to KTO (just thumbs up/down). Constitutional AI, RLAIF.',r:[{n:'▶️ Karpathy: State of GPT (alignment)',u:'https://www.youtube.com/watch?v=bZQun8Y4L2A',t:'video'},{n:'HF TRL: DPO',u:'https://huggingface.co/docs/trl/main/en/dpo_trainer',t:'docs'},{n:'Chip Huyen: AI Engineering',u:'https://www.oreilly.com/library/view/ai-engineering/9781098166298/',t:'book'},{n:'Raschka Newsletter',u:'https://magazine.sebastianraschka.com/',t:'blog'}],tags:['RLHF','DPO','KTO','ORPO','reward models','Constitutional AI'],p:'high'},
-{id:'l2',t:'Attention variants: GQA, MLA, RoPE',d:'GQA (shared KV heads for efficiency), MLA (DeepSeek\'s low-rank KV), RoPE/ALiBi for position encoding, sliding window.',r:[{n:'▶️ Umar Jamil: Attention Mechanisms',u:'https://www.youtube.com/watch?v=XowwKOAWYoQ',t:'video'},{n:'GQA Paper',u:'https://arxiv.org/abs/2305.13245',t:'paper'},{n:'Alammar: Illustrated Transformer',u:'https://jalammar.github.io/illustrated-transformer/',t:'blog'}],tags:['GQA','MLA','MQA','RoPE','ALiBi','sliding window'],p:'medium'},
-{id:'l3',t:'Inference-time scaling & reasoning',d:'o1/o3 paradigm: more compute at inference (longer chains), process reward models, best-of-N, DeepSeek R1.',r:[{n:'Raschka: Inference Scaling',u:'https://magazine.sebastianraschka.com/p/categories-of-inference-time-scaling',t:'blog'},{n:'▶️ Yannic: o1 Analysis',u:'https://www.youtube.com/watch?v=6OsHfUJsaKI',t:'video'},{n:'OpenAI: Learning to Reason',u:'https://openai.com/index/learning-to-reason-with-llms/',t:'blog'}],tags:['test-time compute','CoT','PRM','o1','R1','reasoning'],p:'high'},
-{id:'l4',t:'Alt architectures: MoE, Mamba, RWKV',d:'MoE routes tokens to expert subsets (Mixtral, DeepSeek V3). Mamba/SSMs scale linearly. RWKV: competitive RNN-like.',r:[{n:'▶️ Umar Jamil: Mamba Explained',u:'https://www.youtube.com/watch?v=9BhYrMP8ri8',t:'video'},{n:'Grootendorst: Mamba Guide',u:'https://maartengrootendorst.com/blog/mamba/',t:'blog'},{n:'Mixtral Paper',u:'https://arxiv.org/abs/2401.04088',t:'paper'}],tags:['MoE','Mamba','SSM','RWKV','sparse routing','Mixtral'],p:'medium'},
-{id:'l5',t:'Scaling laws & multimodal',d:'Chinchilla compute-optimal ratios; VLMs (LLaVA, GPT-4V), CLIP/SigLIP, Whisper; DSPy programmatic prompt optimization.',r:[{n:'Chinchilla Paper',u:'https://arxiv.org/abs/2203.15556',t:'paper'},{n:'▶️ Umar Jamil: CLIP',u:'https://www.youtube.com/watch?v=OZF1t_Hieq8',t:'video'},{n:'▶️ Connor: DSPy',u:'https://www.youtube.com/watch?v=im7bCLW2aM4',t:'video'},{n:'DSPy Docs',u:'https://dspy.ai/',t:'docs'}],tags:['Chinchilla','scaling laws','VLM','CLIP','DSPy','multimodal'],p:'medium'},
-{id:'l6',t:'AI security: OWASP & red teaming',d:'Full OWASP LLM Top 10, jailbreak taxonomy, red teaming, content moderation, watermarking.',r:[{n:'OWASP LLM Top 10',u:'https://owasp.org/www-project-top-10-for-large-language-model-applications/',t:'docs'},{n:'Simon Willison: AI Security',u:'https://simonwillison.net/series/prompt-injection/',t:'blog'},{n:'▶️ PortSwigger: LLM Attacks',u:'https://www.youtube.com/watch?v=SvBR0tN9H2k',t:'video'}],tags:['OWASP','jailbreaks','red teaming','watermarking','moderation'],p:'high'},
+{id:'fluency',t:'Phase 9: Conversational Fluency',s:'Whiteboard-level for interviews',c:'#c084fc',items:[
+{id:'l1',t:'Alignment: RLHF→DPO→KTO',d:'PPO-based RLHF to DPO to KTO/ORPO. Constitutional AI.',r:[{n:'▶️ Karpathy: State of GPT',u:'https://www.youtube.com/watch?v=bZQun8Y4L2A',t:'video'},{n:'HF TRL: DPO',u:'https://huggingface.co/docs/trl/main/en/dpo_trainer',t:'docs'},{n:'Chip Huyen: AI Eng',u:'https://www.oreilly.com/library/view/ai-engineering/9781098166298/',t:'book'}],tags:['RLHF','DPO','KTO','ORPO','reward models'],p:'high',dep:'ft2'},
+{id:'l2',t:'Attention variants',d:'GQA, MLA, RoPE, ALiBi, sliding window.',r:[{n:'▶️ Umar Jamil: Attention',u:'https://www.youtube.com/watch?v=XowwKOAWYoQ',t:'video'},{n:'GQA Paper',u:'https://arxiv.org/abs/2305.13245',t:'paper'}],tags:['GQA','MLA','RoPE','ALiBi','sliding window'],p:'medium'},
+{id:'l3',t:'Inference-time scaling',d:'o1/o3, test-time compute, CoT, PRM, DeepSeek R1.',r:[{n:'Raschka: Inference Scaling',u:'https://magazine.sebastianraschka.com/p/categories-of-inference-time-scaling',t:'blog'},{n:'▶️ o1 Analysis',u:'https://www.youtube.com/watch?v=6OsHfUJsaKI',t:'video'}],tags:['test-time compute','CoT','PRM','o1','R1'],p:'high'},
+{id:'l4',t:'MoE, Mamba, RWKV',d:'Mixture of Experts, State Space Models, RNN alternatives.',r:[{n:'▶️ Umar Jamil: Mamba',u:'https://www.youtube.com/watch?v=9BhYrMP8ri8',t:'video'},{n:'Grootendorst: Mamba',u:'https://maartengrootendorst.com/blog/mamba/',t:'blog'}],tags:['MoE','Mamba','SSM','RWKV'],p:'medium'},
+{id:'l5',t:'Scaling, multimodal, DSPy',d:'Chinchilla, VLMs, CLIP, DSPy prompt optimization.',r:[{n:'▶️ CLIP',u:'https://www.youtube.com/watch?v=OZF1t_Hieq8',t:'video'},{n:'DSPy',u:'https://dspy.ai/',t:'docs'}],tags:['Chinchilla','CLIP','DSPy','multimodal'],p:'medium'},
+{id:'l6',t:'AI security & red teaming',d:'OWASP Top 10, jailbreaks, red teaming, watermarking.',r:[{n:'OWASP',u:'https://owasp.org/www-project-top-10-for-large-language-model-applications/',t:'docs'},{n:'▶️ LLM Attacks',u:'https://www.youtube.com/watch?v=SvBR0tN9H2k',t:'video'}],tags:['OWASP','jailbreaks','red teaming','watermarking'],p:'high'},
 ]},
-{id:'landscape',t:'Phase 10: 2026 Landscape',s:'Industry context for interviews and decisions',c:'#fb923c',items:[
-{id:'x1',t:'Open vs closed models',d:'Llama, Qwen, DeepSeek, Mistral vs GPT, Claude, Gemini — gaps, licensing, deployment tradeoffs.',r:[{n:'LMSYS Arena',u:'https://lmarena.ai/',t:'docs'},{n:'Artificial Analysis',u:'https://artificialanalysis.ai/',t:'docs'},{n:'▶️ AI Explained: Rankings',u:'https://www.youtube.com/watch?v=3Fv2SKhGsGw',t:'video'}],tags:['open models','Llama','Qwen','DeepSeek','Mistral','benchmarks'],p:'high'},
-{id:'x2',t:'Agentic coding: Cursor, Claude Code',d:'AI-assisted coding as daily workflow. Understand capabilities and limitations firsthand.',r:[{n:'Claude Code Docs',u:'https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview',t:'docs'},{n:'Cursor Docs',u:'https://docs.cursor.com/',t:'docs'}],tags:['Claude Code','Cursor','agentic coding','workflow'],p:'high'},
-{id:'x3',t:'Paradigm shift & regulation',d:'Train→inference scaling shift; small model wave (Phi, Gemma); EU AI Act; NIST RMF.',r:[{n:'Raschka: State of LLMs 2025',u:'https://magazine.sebastianraschka.com/p/state-of-llms-2025',t:'blog'},{n:'EU AI Act',u:'https://artificialintelligenceact.eu/',t:'docs'}],tags:['scaling shift','Phi','Gemma','EU AI Act','regulation'],p:'medium'},
+{id:'landscape',t:'Phase 10: 2026 Landscape',s:'Industry context for interviews',c:'#fb923c',items:[
+{id:'x1',t:'Open vs closed models',d:'Llama, Qwen, DeepSeek vs GPT, Claude, Gemini.',r:[{n:'LMSYS Arena',u:'https://lmarena.ai/',t:'docs'},{n:'Artificial Analysis',u:'https://artificialanalysis.ai/',t:'docs'}],tags:['open models','Llama','Qwen','DeepSeek'],p:'high'},
+{id:'x2',t:'Agentic coding',d:'Cursor, Claude Code — daily workflow tools.',r:[{n:'Claude Code',u:'https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview',t:'docs'},{n:'Cursor',u:'https://docs.cursor.com/',t:'docs'}],tags:['Claude Code','Cursor','agentic coding'],p:'high'},
+{id:'x3',t:'Paradigm shift & regulation',d:'Train→inference scaling; EU AI Act; small model wave.',r:[{n:'Raschka: State of LLMs',u:'https://magazine.sebastianraschka.com/p/state-of-llms-2025',t:'blog'},{n:'EU AI Act',u:'https://artificialintelligenceact.eu/',t:'docs'}],tags:['scaling shift','EU AI Act','Phi','Gemma'],p:'medium'},
 ]},
-{id:'research',t:'Skippable: Research Frontier',s:'Active research — awareness only',c:'#64748b',items:[
-{id:'s1',t:'Mechanistic interpretability',d:'SAEs, circuits, superposition, feature visualization.',r:[{n:'Anthropic: Scaling Monosemanticity',u:'https://transformer-circuits.pub/2024/scaling-monosemanticity/',t:'paper'},{n:'Neel Nanda',u:'https://www.neelnanda.io/mechanistic-interpretability/getting-started',t:'blog'}],tags:['mech interp','SAEs','circuits','superposition'],p:'low'},
-{id:'s2',t:'RLVR, model merging, distillation',d:'RL from verifiable rewards (R1), TIES/DARE/SLERP merging, teacher-student distillation.',r:[{n:'DeepSeek R1',u:'https://arxiv.org/abs/2501.12948',t:'paper'},{n:'mergekit',u:'https://github.com/arcee-ai/mergekit',t:'code'}],tags:['RLVR','model merging','TIES','distillation'],p:'low'},
-{id:'s3',t:'Edge AI & custom kernels',d:'ONNX, TFLite, CoreML; Triton kernels; Karpathy\'s llm.c; PFLOPs-days.',r:[{n:'Triton Tutorials',u:'https://triton-lang.org/main/getting-started/tutorials/',t:'docs'},{n:'Karpathy llm.c',u:'https://github.com/karpathy/llm.c',t:'code'}],tags:['edge AI','ONNX','Triton','CUDA','llm.c','PFLOPs'],p:'low'},
-{id:'s4',t:'Diffusion models',d:'DDPM, latent diffusion, DiT, flow matching.',r:[{n:'Weng: Diffusion',u:'https://lilianweng.github.io/posts/2021-07-11-diffusion-models/',t:'blog'},{n:'HF Diffusers',u:'https://huggingface.co/docs/diffusers',t:'docs'}],tags:['diffusion','DDPM','DiT','flow matching'],p:'low'},
+{id:'research',t:'Skippable: Research',s:'Awareness only',c:'#64748b',items:[
+{id:'s1',t:'Mech interp',d:'SAEs, circuits, superposition.',r:[{n:'Scaling Monosemanticity',u:'https://transformer-circuits.pub/2024/scaling-monosemanticity/',t:'paper'}],tags:['mech interp','SAEs','circuits'],p:'low'},
+{id:'s2',t:'RLVR & model merging',d:'RL from verifiable rewards, TIES/DARE/SLERP.',r:[{n:'DeepSeek R1',u:'https://arxiv.org/abs/2501.12948',t:'paper'},{n:'mergekit',u:'https://github.com/arcee-ai/mergekit',t:'code'}],tags:['RLVR','model merging','TIES'],p:'low'},
+{id:'s3',t:'Edge AI & CUDA/Triton',d:'ONNX, TFLite, Triton kernels, llm.c.',r:[{n:'Triton',u:'https://triton-lang.org/main/getting-started/tutorials/',t:'docs'},{n:'llm.c',u:'https://github.com/karpathy/llm.c',t:'code'}],tags:['edge AI','Triton','CUDA','llm.c'],p:'low'},
+{id:'s4',t:'Diffusion models',d:'DDPM, DiT, flow matching.',r:[{n:'Weng: Diffusion',u:'https://lilianweng.github.io/posts/2021-07-11-diffusion-models/',t:'blog'},{n:'Diffusers',u:'https://huggingface.co/docs/diffusers',t:'docs'}],tags:['diffusion','DDPM','DiT'],p:'low'},
 ]},
 ];
 
-const SK='ai-roadmap-v4';let S={ck:{},ap:'foundations',fl:'all',q:''};
-const load=()=>{try{const d=JSON.parse(localStorage.getItem(SK));if(d){S.ck=d.ck||{};S.ap=d.ap||'foundations'}}catch(e){}};
-const save=()=>{try{localStorage.setItem(SK,JSON.stringify({ck:S.ck,ap:S.ap}))}catch(e){}};
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const SK='ai-roadmap-v5';
+let S={ck:{},ip:{},notes:{},ap:'foundations',fl:'all',q:'',recs:[],custom:{},wurl:''};
+const load=()=>{try{const d=JSON.parse(localStorage.getItem(SK));if(d)Object.assign(S,d)}catch(e){}};
+const save=()=>{try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}};
 const $=id=>document.getElementById(id);
-const allI=()=>P.flatMap(p=>p.items);
-const ps=p=>{const d=p.items.filter(i=>S.ck[i.id]).length;return{d,t:p.items.length,p:p.items.length?Math.round(d/p.items.length*100):0}};
+
+// helpers
+const allI=()=>{
+  const items=[];
+  P.forEach(p=>{
+    const customs=(S.custom[p.id]||[]);
+    items.push(...p.items,...customs);
+  });
+  return items;
+};
+const phaseItems=pid=>{const ph=P.find(p=>p.id===pid);return ph?[...ph.items,...(S.custom[pid]||[])]:[]};
+const itemSt=id=>S.ck[id]?'done':S.ip[id]?'ip':'';
+const ps=pid=>{const items=phaseItems(pid);const d=items.filter(i=>S.ck[i.id]).length;return{d,t:items.length,p:items.length?Math.round(d/items.length*100):0}};
 const os=()=>{const a=allI(),d=a.filter(i=>S.ck[i.id]).length,cr=a.filter(i=>i.p==='critical'),cd=cr.filter(i=>S.ck[i.id]).length;return{d,t:a.length,p:a.length?Math.round(d/a.length*100):0,cd,ct:cr.length}};
 const ri=t=>({docs:'📄',blog:'📝',video:'▶️',book:'📕',paper:'🔬',course:'🎓',code:'💻'}[t]||'🔗');
+const findItem=id=>allI().find(i=>i.id===id);
 let expandedId=null;
 
+// ═══════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════
 function renderTabs(){
-$('tabs').innerHTML=P.map(p=>{const s=ps(p);return`<div class="tab${p.id===S.ap?' active':''}${s.p===100?' done':''}" data-p="${p.id}"><span class="tdot" style="background:${p.c}"></span>${p.t.replace(/Phase \d+: /,'').replace('Skippable: ','⏭ ')}<span class="tbadge">${s.d}/${s.t}</span></div>`}).join('');
+$('tabs').innerHTML=P.map(p=>{const s=ps(p.id);return`<div class="tab${p.id===S.ap?' active':''}${s.p===100?' done':''}" data-p="${p.id}"><span class="tdot" style="background:${p.c}"></span>${p.t.replace(/Phase \d+: /,'').replace('Skippable: ','⏭ ')}<span class="tbadge">${s.d}/${s.t}</span></div>`}).join('');
 $('tabs').querySelectorAll('.tab').forEach(t=>t.onclick=()=>{S.ap=t.dataset.p;S.fl='all';S.q='';expandedId=null;save();render();t.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})});
 }
 
 function renderPhdr(){
-const ph=P.find(p=>p.id===S.ap);if(!ph)return;const s=ps(ph);
+const ph=P.find(p=>p.id===S.ap);if(!ph)return;const s=ps(ph.id);
 $('phdr').innerHTML=`<div class="ptitle"><span style="color:${ph.c}">●</span> ${ph.t}</div><div class="psub">${ph.s}</div><div class="pbarw"><div class="btr"><div class="bf${s.p===100?' ok':''}" style="width:${s.p}%"></div></div><div class="bpct">${s.p}%</div></div>`;
 }
 
 function renderFbar(){
-$('fbar').innerHTML=`${['all','critical','high','medium','low'].map(f=>`<button class="fb${S.fl===f?' on':''}" data-f="${f}">${f==='all'?'All':f[0].toUpperCase()+f.slice(1)}</button>`).join('')}<input class="si" id="si" type="text" placeholder="Search topics…" value="${S.q}">`;
+const hasRecs=S.recs.length>0;
+$('fbar').innerHTML=`${['all','critical','high','medium','low'].map(f=>`<button class="fb${S.fl===f?' on':''}" data-f="${f}">${f==='all'?'All':f[0].toUpperCase()+f.slice(1)}</button>`).join('')}<input class="si" id="si" type="text" placeholder="Search topics…" value="${S.q}">${S.wurl?`<button class="scan-btn" id="scanbtn">🔍 Scan landscape</button>`:''}`;
 $('fbar').querySelectorAll('.fb').forEach(b=>b.onclick=()=>{S.fl=b.dataset.f;renderFbar();renderItems()});
 let deb;$('si').oninput=e=>{clearTimeout(deb);deb=setTimeout(()=>{S.q=e.target.value;renderItems()},300)};
+const sb=$('scanbtn');if(sb)sb.onclick=scanLandscape;
+}
+
+function renderRecs(){
+if(!S.recs.length){$('recs').innerHTML='';return}
+$('recs').innerHTML=`<div class="rec-header"><span>🔍 ${S.recs.length} recommendation${S.recs.length>1?'s':''}</span><button class="rec-clear" id="rec-clear-all">Dismiss all</button></div>`+
+S.recs.map((r,i)=>`<div class="card rec" data-ri="${i}">
+<div class="ic"><div class="itr"><span class="ititle">${r.title}</span><span class="pbadge ${r.priority}">${r.priority}</span></div>
+<div class="ds">${r.description}</div>
+<div class="rr">${(r.resources||[]).map(x=>`<a class="rchip" href="${x.url}" target="_blank" onclick="event.stopPropagation()"><span class="ri">${ri(x.type)}</span>${x.name}</a>`).join('')}</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">${(r.tags||[]).map(t=>`<span class="dpt">${t}</span>`).join('')}</div>
+<div class="rec-bar"><button class="rec-add" data-ri="${i}">+ Add to ${r.phase||S.ap}</button><button class="rec-del" data-ri="${i}">Dismiss</button><span class="rec-worth ${r.worth_it?'yes':'no'}">${r.worth_it?'✓ Worth adding':'⟳ Optional'}</span></div>
+</div></div>`).join('');
+$('rec-clear-all').onclick=()=>{S.recs=[];save();renderRecs()};
+$('recs').querySelectorAll('.rec-add').forEach(b=>b.onclick=e=>{
+  e.stopPropagation();const i=+b.dataset.ri;const r=S.recs[i];if(!r)return;
+  const pid=r.phase||S.ap;if(!S.custom[pid])S.custom[pid]=[];
+  const newId='c_'+Date.now();
+  S.custom[pid].push({id:newId,t:r.title,d:r.description,r:(r.resources||[]).map(x=>({n:x.name,u:x.url,t:x.type})),tags:r.tags||[],p:r.priority});
+  S.recs.splice(i,1);save();render();
+});
+$('recs').querySelectorAll('.rec-del').forEach(b=>b.onclick=e=>{
+  e.stopPropagation();S.recs.splice(+b.dataset.ri,1);save();renderRecs();
+});
+}
+
+function cardHTML(i,isCustom){
+const exp=expandedId===i.id;const dim=expandedId&&expandedId!==i.id;const st=itemSt(i.id);
+const stIcon=st==='done'?'✓':st==='ip'?'◐':'';const stCls=st||'';
+const depItem=i.dep?findItem(i.dep):null;
+const depHTML=depItem?`<div class="dep-hint">Prereq: <a href="#" onclick="event.preventDefault();jumpTo('${i.dep}')">${depItem.t}</a></div>`:'';
+const note=S.notes[i.id]||'';
+return`<div class="card st-${stCls}${exp?' expanded':''}${dim?' dimmed':''}" data-id="${i.id}">
+<div class="itop"><button class="stbtn ${stCls}" data-st="${i.id}">${stIcon}</button>
+<div class="ic"><div class="itr"><span class="ititle">${i.t}</span><span class="pbadge ${i.p}">${i.p}</span><button class="dbtn" data-exp="${i.id}">${exp?'✕ close':'details ↻'}</button></div>
+${depHTML}<div class="ds">${i.d}</div>
+<div class="rr">${i.r.map(r=>`<a class="rchip" href="${r.u}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="ri">${ri(r.t)}</span>${r.n}</a>`).join('')}</div>
+</div></div>
+<div class="dp">
+<div class="dps"><div class="dpd">${i.d}</div></div>
+<div class="dps"><div class="dpl">Topics covered</div><div class="dptags">${i.tags.map(t=>`<span class="dpt">${t}</span>`).join('')}</div></div>
+<div class="dps"><div class="dpl">Resources</div><div class="rr">${i.r.map(r=>`<a class="rchip" href="${r.u}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="ri">${ri(r.t)}</span>${r.n}</a>`).join('')}</div></div>
+<div class="dps"><div class="dpl">Notes</div><textarea class="notes-area" data-note="${i.id}" placeholder="Your notes on this topic…">${note}</textarea></div>
+${isCustom?`<button class="rec-del" data-delc="${i.id}" style="margin-top:8px">🗑 Remove custom card</button>`:''}
+</div></div>`;
 }
 
 function renderItems(){
 const ph=P.find(p=>p.id===S.ap);if(!ph)return;
-let items=ph.items;
+let items=phaseItems(ph.id);
+const customs=S.custom[ph.id]||[];
+const customIds=new Set(customs.map(c=>c.id));
 if(S.fl!=='all')items=items.filter(i=>i.p===S.fl);
 if(S.q){const q=S.q.toLowerCase();items=items.filter(i=>i.t.toLowerCase().includes(q)||i.d.toLowerCase().includes(q)||i.tags.some(t=>t.toLowerCase().includes(q)))}
-$('il').innerHTML=items.length?items.map(i=>{
-const exp=expandedId===i.id;
-const dim=expandedId&&expandedId!==i.id;
-return`<div class="card${S.ck[i.id]?' chk':''}${exp?' expanded':''}${dim?' dimmed':''}" data-id="${i.id}">
-<div class="itop"><div class="cbw"><input class="cb" type="checkbox"${S.ck[i.id]?' checked':''} data-id="${i.id}"></div>
-<div class="ic"><div class="itr"><span class="ititle">${i.t}</span><span class="pbadge ${i.p}">${i.p}</span><button class="dbtn" data-exp="${i.id}">${exp?'✕ close':'details ↻'}</button></div>
-<div class="desc-short">${i.d}</div>
-<div class="res-row">${i.r.map(r=>`<a class="rchip" href="${r.u}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="ri">${ri(r.t)}</span>${r.n}</a>`).join('')}</div>
-</div></div>
-<div class="detail-panel">
-<div class="dp-sec"><div class="dp-desc">${i.d}</div></div>
-<div class="dp-sec"><div class="dp-label">Topics covered</div><div class="dp-tags">${i.tags.map(t=>`<span class="dp-tag">${t}</span>`).join('')}</div></div>
-<div class="dp-sec"><div class="dp-label">Resources</div><div class="dp-res">${i.r.map(r=>`<a class="rchip" href="${r.u}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="ri">${ri(r.t)}</span>${r.n}</a>`).join('')}</div></div>
-</div>
-</div>`}).join(''):'<div class="empty"><div class="em">🔍</div><p>No items match filters</p></div>';
+$('il').innerHTML=items.length?items.map(i=>cardHTML(i,customIds.has(i.id))).join(''):'<div class="empty"><div class="em">🔍</div><p>No items match</p></div>';
 $('rw').style.display=expandedId?'none':'';
-// Events
-$('il').querySelectorAll('.cb').forEach(cb=>{cb.onclick=e=>e.stopPropagation();cb.onchange=e=>{
-const id=e.target.dataset.id;if(e.target.checked)S.ck[id]=1;else delete S.ck[id];save();renderTabs();renderPhdr();renderHeader();renderItems();
-const s=ps(ph);if(s.p===100&&e.target.checked)showFlash(ph.t);
-}});
+// State toggle
+$('il').querySelectorAll('.stbtn').forEach(b=>b.onclick=e=>{
+  e.stopPropagation();const id=b.dataset.st;const cur=itemSt(id);
+  if(cur===''){S.ip[id]=1;delete S.ck[id]}
+  else if(cur==='ip'){S.ck[id]=1;delete S.ip[id]}
+  else{delete S.ck[id];delete S.ip[id]}
+  save();renderTabs();renderPhdr();renderHeader();renderItems();
+  const s=ps(ph.id);if(s.p===100&&cur==='ip')showFlash(ph.t);
+});
+// Expand
 $('il').querySelectorAll('[data-exp]').forEach(b=>b.onclick=e=>{
-e.stopPropagation();const id=b.dataset.exp;
-expandedId=expandedId===id?null:id;
-renderItems();
-if(expandedId){const el=document.querySelector(`.card[data-id="${expandedId}"]`);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
+  e.stopPropagation();const id=b.dataset.exp;
+  const collapsing=expandedId===id;
+  const collapseId=collapsing?id:null;
+  expandedId=collapsing?null:id;
+  renderItems();
+  if(collapseId){const el=document.querySelector(`.card[data-id="${collapseId}"]`);if(el)el.scrollIntoView({behavior:'instant',block:'nearest'})}
+  else if(expandedId){const el=document.querySelector(`.card[data-id="${expandedId}"]`);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
+});
+// Notes
+$('il').querySelectorAll('.notes-area').forEach(ta=>{ta.oninput=e=>{S.notes[ta.dataset.note]=ta.value;save()}});
+// Delete custom
+$('il').querySelectorAll('[data-delc]').forEach(b=>b.onclick=e=>{
+  e.stopPropagation();const id=b.dataset.delc;
+  Object.keys(S.custom).forEach(k=>{S.custom[k]=(S.custom[k]||[]).filter(c=>c.id!==id)});
+  delete S.ck[id];delete S.ip[id];delete S.notes[id];
+  expandedId=null;save();render();
 });
 }
 
 function renderHeader(){
-const s=os();$('sd').textContent=s.d;$('st').textContent=s.t;$('sc').textContent=s.cd+'/'+s.ct;
+const s=os();$('sd').textContent=s.d;$('st').textContent=s.t;
 $('rf').style.strokeDashoffset=94.25-(94.25*s.p/100);$('rt').textContent=s.p+'%';
 }
 
 function renderA(){
 const o=os(),a=allI(),bp={critical:0,high:0,medium:0,low:0},bt={critical:0,high:0,medium:0,low:0};
 a.forEach(i=>{bt[i.p]++;if(S.ck[i.id])bp[i.p]++});
-$('ac').innerHTML=`<div class="asec"><div class="abig"><div class="abn">${o.p}%</div><div class="abl">Overall · ${o.d} of ${o.t}</div></div></div>
+const ipCount=Object.keys(S.ip).length;
+$('ac').innerHTML=`<div class="asec"><div class="abig"><div class="abn">${o.p}%</div><div class="abl">${o.d} done · ${ipCount} in progress · ${o.t-o.d-ipCount} remaining</div></div></div>
 <div class="asec"><div class="ast">Priority breakdown</div><div class="pbr">${[['critical','--critical'],['high','--high'],['medium','--medium'],['low','--low']].map(([k,v])=>`<div class="pb"><span class="pbd" style="background:var(${v})"></span><span class="pbl">${k}</span><span class="pbv">${bp[k]}/${bt[k]}</span></div>`).join('')}</div></div>
-<div class="asec"><div class="ast">Phase progress</div>${P.map(p=>{const s=ps(p);return`<div class="apr"><span class="apnm">${p.t.replace(/Phase \d+: /,'').replace('Skippable: ','')}</span><div class="apbw"><div class="apbf" style="width:${s.p}%;background:${p.c}"></div></div><span class="app">${s.p}%</span></div>`}).join('')}</div>
-<div class="asec"><div class="ast">Quick stats</div><div class="agrid">
+<div class="asec"><div class="ast">Phase progress</div>${P.map(p=>{const s=ps(p.id);return`<div class="apr"><span class="apnm">${p.t.replace(/Phase \d+: /,'').replace('Skippable: ','')}</span><div class="apbw"><div class="apbf" style="width:${s.p}%;background:${p.c}"></div></div><span class="app">${s.p}%</span></div>`}).join('')}</div>
+<div class="asec"><div class="ast">Data</div><div class="agrid">
 <div class="agi"><div class="agn" style="color:var(--critical)">${bp.critical}/${bt.critical}</div><div class="agl">Critical done</div></div>
-<div class="agi"><div class="agn" style="color:var(--low)">${P.filter(p=>ps(p).p===100).length}/${P.length}</div><div class="agl">Phases done</div></div>
-<div class="agi"><div class="agn" style="color:var(--accent)">${a.filter(i=>S.ck[i.id]).reduce((s,i)=>s+i.r.length,0)}</div><div class="agl">Resources used</div></div>
-<div class="agi"><div class="agn">${o.t-o.d}</div><div class="agl">Remaining</div></div></div></div>`;
+<div class="agi"><div class="agn" style="color:var(--inprog)">${ipCount}</div><div class="agl">In progress</div></div>
+<div class="agi"><div class="agn" style="color:var(--low)">${P.filter(p=>ps(p.id).p===100).length}/${P.length}</div><div class="agl">Phases done</div></div>
+<div class="agi"><div class="agn">${Object.keys(S.notes).filter(k=>S.notes[k]).length}</div><div class="agl">Notes written</div></div>
+</div></div>
+<div class="asec"><div class="ast">Export / Import</div>
+<div class="mrow"><button class="mbtn mbtn-s" id="exp-btn">📥 Export JSON</button><label class="imp-label" for="imp-file">📤 Import JSON</label></div>
+</div>`;
+$('exp-btn').onclick=exportData;
 }
 
-function showFlash(t){const e=document.createElement('div');e.className='pcf';e.innerHTML=`<div class="msg">✅ ${t} complete!</div>`;document.body.appendChild(e);setTimeout(()=>e.remove(),1800)}
-function render(){renderTabs();renderPhdr();renderFbar();renderItems();renderHeader();renderA()}
+// ═══════════════════════════════════════
+// SCANNER
+// ═══════════════════════════════════════
+async function scanLandscape(){
+const btn=$('scanbtn');if(!btn)return;
+btn.disabled=true;btn.textContent='🔍 Scanning…';
+const existing=allI().map(i=>i.t).join(', ');
+try{
+const res=await fetch(S.wurl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+model:'claude-sonnet-4-20250514',max_tokens:4000,
+tools:[{type:'web_search_20250305',name:'web_search'}],
+messages:[{role:'user',content:`You are an AI engineering landscape researcher. Search X (Twitter), AI engineering blogs, Hacker News, and GitHub for the latest notable developments in AI/ML engineering from the past 2-3 weeks.
 
+Focus on: new tools/frameworks gaining traction, new model releases, training/inference breakthroughs, notable open-source repos (by people like Karpathy, Andrej, etc.), paradigm shifts, emerging best practices.
+
+These topics are ALREADY in my roadmap — do NOT suggest duplicates: ${existing}
+
+Return ONLY a JSON array (no markdown, no backticks) of 3-5 suggestions:
+[{"title":"...","description":"...","tags":["..."],"priority":"critical|high|medium|low","phase":"best matching phase id from: ${P.map(p=>p.id).join(',')}","resources":[{"name":"...","url":"...","type":"video|docs|blog|code"}],"worth_it":true/false,"reasoning":"1 sentence on why this is/isn't worth adding"}]`}]
+})});
+const data=await res.json();
+const text=data.content?.map(b=>b.text||'').join('')||'';
+const jsonMatch=text.match(/\[[\s\S]*\]/);
+if(jsonMatch){S.recs=JSON.parse(jsonMatch[0]);save();renderRecs()}
+else{alert('Could not parse results. Try again.')}
+}catch(e){alert('Scan failed: '+e.message)}
+btn.disabled=false;btn.textContent='🔍 Scan landscape';
+}
+
+// ═══════════════════════════════════════
+// SETTINGS MODAL
+// ═══════════════════════════════════════
+function openSettings(){
+$('modal').innerHTML=`<h3>⚙ Settings</h3>
+<label>Cloudflare Worker URL</label>
+<div class="minfo">Proxy for Claude API calls. Deploy the worker.js file to Cloudflare Workers and paste the URL here. Required for landscape scanning.</div>
+<input type="url" id="wurl-input" placeholder="https://your-worker.workers.dev" value="${S.wurl}">
+<div class="mrow"><button class="mbtn mbtn-p" id="save-wurl">Save</button><button class="mbtn mbtn-s" id="close-modal">Cancel</button></div>`;
+$('mov').classList.add('open');
+$('save-wurl').onclick=()=>{S.wurl=$('wurl-input').value.trim().replace(/\/$/,'');save();$('mov').classList.remove('open');renderFbar()};
+$('close-modal').onclick=()=>$('mov').classList.remove('open');
+}
+
+// ═══════════════════════════════════════
+// EXPORT / IMPORT
+// ═══════════════════════════════════════
+function exportData(){
+const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+const url=URL.createObjectURL(blob);const a=document.createElement('a');
+a.href=url;a.download='ai-roadmap-backup.json';a.click();URL.revokeObjectURL(url);
+}
+$('imp-file').onchange=e=>{
+const f=e.target.files[0];if(!f)return;
+const reader=new FileReader();
+reader.onload=ev=>{try{const d=JSON.parse(ev.target.result);Object.assign(S,d);save();render();alert('Import successful!')}catch(e){alert('Invalid file')}};
+reader.readAsText(f);e.target.value='';
+};
+
+// ═══════════════════════════════════════
+// JUMP TO (for dep links)
+// ═══════════════════════════════════════
+window.jumpTo=function(id){
+  // find which phase this item is in
+  for(const p of P){if(p.items.find(i=>i.id===id)){S.ap=p.id;break}}
+  expandedId=id;save();render();
+  setTimeout(()=>{const el=document.querySelector(`.card[data-id="${id}"]`);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50);
+};
+
+function showFlash(t){const e=document.createElement('div');e.className='pcf';e.innerHTML=`<div class="msg">✅ ${t} complete!</div>`;document.body.appendChild(e);setTimeout(()=>e.remove(),1800)}
+function render(){renderTabs();renderPhdr();renderFbar();renderRecs();renderItems();renderHeader();renderA()}
+
+// Analytics panel
 const openA=()=>{$('apn').classList.add('open');$('aov').classList.add('open');renderA()};
 const closeA=()=>{$('apn').classList.remove('open');$('aov').classList.remove('open')};
 $('afab').onclick=openA;$('aov').onclick=closeA;$('acl').onclick=closeA;$('rclick').onclick=openA;
-document.onkeydown=e=>{if(e.key==='Escape'){if(expandedId){expandedId=null;renderItems()}else closeA()}};
-$('rb').onclick=()=>{if(confirm('Reset all progress? Cannot undo.')){S.ck={};save();render()}};
+$('gear').onclick=openSettings;
+$('mov').onclick=e=>{if(e.target===$('mov'))$('mov').classList.remove('open')};
+document.onkeydown=e=>{if(e.key==='Escape'){if($('mov').classList.contains('open'))$('mov').classList.remove('open');else if(expandedId){const cid=expandedId;expandedId=null;renderItems();const el=document.querySelector(`.card[data-id="${cid}"]`);if(el)el.scrollIntoView({behavior:'instant',block:'nearest'})}else closeA()}};
+$('rb').onclick=()=>{if(confirm('Reset ALL progress, notes, and custom cards? Cannot undo.')){S={ck:{},ip:{},notes:{},ap:'foundations',fl:'all',q:'',recs:[],custom:{},wurl:S.wurl};save();render()}};
 
 load();render();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
