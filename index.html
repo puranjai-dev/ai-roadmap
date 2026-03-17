@@ -413,6 +413,11 @@ $('exp-btn').onclick=exportData;
 // ═══════════════════════════════════════
 async function scanLandscape(){
 const btn=$('scanbtn');if(!btn)return;
+// Validate worker URL
+let wurl=S.wurl.trim();
+if(!wurl){alert('No Worker URL set. Go to ⚙ Settings first.');return}
+if(!wurl.startsWith('http')){wurl='https://'+wurl;S.wurl=wurl;save()}
+try{new URL(wurl)}catch(e){alert('Invalid Worker URL: "'+wurl+'"\n\nGo to ⚙ Settings and fix it.');return}
 btn.disabled=true;btn.textContent='🔍 Scanning with '+S.model.split('-').slice(0,2).join('-')+'…';
 const existing=allI().map(i=>i.t).join(', ');
 const prompt=`You are an AI engineering landscape researcher. Search X (Twitter), AI engineering blogs, Hacker News, and GitHub for the latest notable developments in AI/ML engineering from the past 2-3 weeks.
@@ -424,15 +429,16 @@ These topics are ALREADY in my roadmap — do NOT suggest duplicates: ${existing
 Return ONLY a JSON array (no markdown, no backticks) of 3-5 suggestions:
 [{"title":"...","description":"...","tags":["..."],"priority":"critical|high|medium|low","phase":"best matching phase id from: ${P.map(p=>p.id).join(',')}","resources":[{"name":"...","url":"...","type":"video|docs|blog|code"}],"worth_it":true/false,"reasoning":"1 sentence on why this is/isn't worth adding"}]`;
 try{
-const res=await fetch(S.wurl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+const res=await fetch(wurl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
 model:S.model,max_tokens:4000,
 tools:[{type:'web_search_20250305',name:'web_search'}],
 messages:[{role:'user',content:prompt}]
 })});
 const data=await res.json();
-if(data.error){alert('API error: '+data.error);btn.disabled=false;btn.textContent='🔍 Scan landscape';return}
+if(data.error){alert('API error: '+(typeof data.error==='string'?data.error:JSON.stringify(data.error)));btn.disabled=false;btn.textContent='🔍 Scan landscape';return}
 // Worker returns normalized {text, provider, ...}
-const text=data.text||data.content?.map(b=>b.text||'').join('')||'';
+const text=data.text||'';
+if(!text){alert('Empty response from model.\n\nProvider: '+(data.provider||'unknown')+'\nModel: '+(data.model||S.model)+'\n\nRaw response (first 800 chars):\n'+JSON.stringify(data.raw||data).slice(0,800));btn.disabled=false;btn.textContent='🔍 Scan landscape';return}
 // Clean response: strip markdown fences, find outermost JSON array
 let clean=text.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
 // Greedy match: outermost [ ... ] (last closing bracket)
@@ -441,7 +447,7 @@ if(start!==-1&&end>start){
 try{S.recs=JSON.parse(clean.slice(start,end+1));save();renderRecs()}
 catch(pe){alert('JSON parse error: '+pe.message+'\n\nRaw (first 500 chars):\n'+clean.slice(start,start+500))}
 }else{alert('No JSON array found in response.\n\nRaw:\n'+text.slice(0,400))}
-}catch(e){alert('Scan failed: '+e.message)}
+}catch(e){alert('Scan failed: '+e.message+'\n\nWorker URL: '+wurl+'\nModel: '+S.model)}
 btn.disabled=false;btn.textContent='🔍 Scan landscape';
 }
 
