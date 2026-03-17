@@ -433,9 +433,14 @@ const data=await res.json();
 if(data.error){alert('API error: '+data.error);btn.disabled=false;btn.textContent='🔍 Scan landscape';return}
 // Worker returns normalized {text, provider, ...}
 const text=data.text||data.content?.map(b=>b.text||'').join('')||'';
-const jsonMatch=text.match(/\[[\s\S]*?\]/);
-if(jsonMatch){S.recs=JSON.parse(jsonMatch[0]);save();renderRecs()}
-else{alert('Could not parse results. The model returned:\n\n'+text.slice(0,300))}
+// Clean response: strip markdown fences, find outermost JSON array
+let clean=text.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+// Greedy match: outermost [ ... ] (last closing bracket)
+const start=clean.indexOf('[');const end=clean.lastIndexOf(']');
+if(start!==-1&&end>start){
+try{S.recs=JSON.parse(clean.slice(start,end+1));save();renderRecs()}
+catch(pe){alert('JSON parse error: '+pe.message+'\n\nRaw (first 500 chars):\n'+clean.slice(start,start+500))}
+}else{alert('No JSON array found in response.\n\nRaw:\n'+text.slice(0,400))}
 }catch(e){alert('Scan failed: '+e.message)}
 btn.disabled=false;btn.textContent='🔍 Scan landscape';
 }
