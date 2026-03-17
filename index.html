@@ -258,7 +258,7 @@ const P=[
 // STATE
 // ═══════════════════════════════════════
 const SK='ai-roadmap-v5';
-let S={ck:{},ip:{},notes:{},ap:'foundations',fl:'all',q:'',recs:[],custom:{},wurl:'',model:'claude-sonnet-4-20250514'};
+let S={ck:{},ip:{},notes:{},ap:'foundations',fl:'all',q:'',recs:[],custom:{},wurl:'',model:'claude-sonnet-4-6-20260301'};
 const load=()=>{try{const d=JSON.parse(localStorage.getItem(SK));if(d)Object.assign(S,d)}catch(e){}};
 const save=()=>{try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}};
 const $=id=>document.getElementById(id);
@@ -430,7 +430,7 @@ Return ONLY a JSON array (no markdown, no backticks) of 3-5 suggestions:
 [{"title":"...","description":"...","tags":["..."],"priority":"critical|high|medium|low","phase":"best matching phase id from: ${P.map(p=>p.id).join(',')}","resources":[{"name":"...","url":"...","type":"video|docs|blog|code"}],"worth_it":true/false,"reasoning":"1 sentence on why this is/isn't worth adding"}]`;
 try{
 const res=await fetch(wurl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-model:S.model,max_tokens:4000,
+model:S.model,max_tokens:16000,
 tools:[{type:'web_search_20250305',name:'web_search'}],
 messages:[{role:'user',content:prompt}]
 })});
@@ -455,39 +455,57 @@ btn.disabled=false;btn.textContent='🔍 Scan landscape';
 // SETTINGS MODAL
 // ═══════════════════════════════════════
 function openSettings(){
-const models=[
-  {g:'Anthropic',opts:[
-    {v:'claude-sonnet-4-20250514',l:'Claude Sonnet 4'},
-    {v:'claude-opus-4-20250514',l:'Claude Opus 4'},
-    {v:'claude-haiku-4-5-20251001',l:'Claude Haiku 4.5'},
+const M=[
+  {g:'Anthropic — 💰 Budget (< $1/MTok in)',opts:[
+    {v:'claude-haiku-4-5-20251001',l:'Haiku 4.5',p:'$1 / $5'},
   ]},
-  {g:'OpenAI',opts:[
-    {v:'gpt-4o',l:'GPT-4o'},
-    {v:'gpt-4.1',l:'GPT-4.1'},
-    {v:'gpt-5',l:'GPT-5'},
-    {v:'o3',l:'o3'},
-    {v:'o4-mini',l:'o4-mini'},
+  {g:'Anthropic — 🟡 Mid ($1–5/MTok in)',opts:[
+    {v:'claude-sonnet-4-6-20260301',l:'Sonnet 4.6 ✨ latest',p:'$3 / $15'},
+    {v:'claude-sonnet-4-5-20241022',l:'Sonnet 4.5',p:'$3 / $15'},
+    {v:'claude-sonnet-4-20250514',l:'Sonnet 4',p:'$3 / $15'},
+  ]},
+  {g:'Anthropic — 🔴 Premium ($5+/MTok in)',opts:[
+    {v:'claude-opus-4-6-20260205',l:'Opus 4.6 ✨ latest',p:'$5 / $25'},
+    {v:'claude-opus-4-5-20250220',l:'Opus 4.5',p:'$5 / $25'},
+  ]},
+  {g:'OpenAI — 💰 Budget (< $1/MTok in)',opts:[
+    {v:'gpt-4.1-nano',l:'GPT-4.1 Nano',p:'$0.10 / $0.40'},
+    {v:'gpt-4o-mini',l:'GPT-4o Mini',p:'$0.15 / $0.60'},
+    {v:'gpt-5-mini',l:'GPT-5 Mini ✨',p:'$0.25 / $2'},
+    {v:'gpt-4.1-mini',l:'GPT-4.1 Mini',p:'$0.30 / $1.20'},
+  ]},
+  {g:'OpenAI — 🟡 Mid ($1–5/MTok in)',opts:[
+    {v:'o4-mini',l:'o4-mini (reasoning)',p:'$1.10 / $4.40'},
+    {v:'gpt-5',l:'GPT-5 ✨ flagship',p:'$1.25 / $10'},
+    {v:'gpt-4.1',l:'GPT-4.1 (1M context)',p:'$2 / $8'},
+    {v:'o3',l:'o3 (reasoning)',p:'$2 / $8'},
+    {v:'gpt-4o',l:'GPT-4o',p:'$2.50 / $10'},
+  ]},
+  {g:'OpenAI — 🔴 Premium ($5+/MTok in)',opts:[
+    {v:'o3-pro',l:'o3 Pro (deep reasoning)',p:'$20 / $80'},
   ]},
 ];
+const allV=M.flatMap(g=>g.opts.map(o=>o.v));
+const isCust=!allV.includes(S.model);
 $('modal').innerHTML=`<h3>⚙ Settings</h3>
 <label>Cloudflare Worker URL</label>
-<div class="minfo">Proxy for API calls. Deploy worker.js to Cloudflare Workers and paste the URL here. Required for landscape scanning. Add both ANTHROPIC_KEY and OPENAI_KEY as encrypted env vars on the worker to use either provider.</div>
+<div class="minfo">Deploy worker.js to Cloudflare Workers. Add ANTHROPIC_KEY and/or OPENAI_KEY as encrypted env vars.</div>
 <input type="url" id="wurl-input" placeholder="https://your-worker.workers.dev" value="${S.wurl}">
-<label style="margin-top:4px">Model</label>
-<div class="minfo">Select which model powers the landscape scanner. Anthropic models use /v1/messages, OpenAI models use /v1/responses — the worker handles translation automatically.</div>
-<select id="model-select" style="width:100%;padding:8px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:13px;outline:none;margin-bottom:8px;-webkit-appearance:none">
-${models.map(g=>`<optgroup label="${g.g}">${g.opts.map(o=>`<option value="${o.v}"${S.model===o.v?' selected':''}>${o.l}</option>`).join('')}</optgroup>`).join('')}
-<option value="custom"${!models.some(g=>g.opts.some(o=>o.v===S.model))?'selected':''}>Custom…</option>
+<label style="margin-top:8px">Model <span style="font-weight:400;color:var(--text3);font-size:11px">— input / output per 1M tokens</span></label>
+<div class="minfo">💰 Budget = &lt;$1 input &nbsp;·&nbsp; 🟡 Mid = $1–5 &nbsp;·&nbsp; 🔴 Premium = $5+<br>✨ = latest generation. Reasoning models (o3, o4-mini) consume hidden thinking tokens billed as output — actual cost can be 2-5x the visible output.</div>
+<select id="model-select" style="width:100%;padding:9px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:13px;outline:none;margin-bottom:8px;-webkit-appearance:none">
+${M.map(g=>`<optgroup label="${g.g}">${g.opts.map(o=>`<option value="${o.v}"${S.model===o.v?' selected':''}>${o.l}  ·  ${o.p}</option>`).join('')}</optgroup>`).join('')}
+<option value="custom"${isCust?' selected':''}>Custom model string…</option>
 </select>
-<input type="text" id="model-custom" placeholder="e.g. gpt-5-turbo" value="${!models.some(g=>g.opts.some(o=>o.v===S.model))?S.model:''}" style="display:${models.some(g=>g.opts.some(o=>o.v===S.model))?'none':'block'}">
-<div class="mrow"><button class="mbtn mbtn-p" id="save-settings">Save</button><button class="mbtn mbtn-s" id="close-modal">Cancel</button></div>`;
+<input type="text" id="model-custom" placeholder="e.g. gpt-5.4, deepseek-chat" value="${isCust?S.model:''}" style="display:${isCust?'block':'none'}">
+<div class="mrow" style="margin-top:12px"><button class="mbtn mbtn-p" id="save-settings">Save</button><button class="mbtn mbtn-s" id="close-modal">Cancel</button></div>`;
 $('mov').classList.add('open');
 $('model-select').onchange=()=>{$('model-custom').style.display=$('model-select').value==='custom'?'block':'none'};
 $('save-settings').onclick=()=>{
   S.wurl=$('wurl-input').value.trim().replace(/\/$/,'');
   const sel=$('model-select').value;
   S.model=sel==='custom'?$('model-custom').value.trim():sel;
-  if(!S.model)S.model='claude-sonnet-4-20250514';
+  if(!S.model)S.model='claude-sonnet-4-6-20260301';
   save();$('mov').classList.remove('open');renderFbar();
 };
 $('close-modal').onclick=()=>$('mov').classList.remove('open');
