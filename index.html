@@ -258,7 +258,7 @@ const P=[
 // STATE
 // ═══════════════════════════════════════
 const SK='ai-roadmap-v5';
-let S={ck:{},ip:{},notes:{},ap:'foundations',fl:'all',q:'',recs:[],custom:{},wurl:''};
+let S={ck:{},ip:{},notes:{},ap:'foundations',fl:'all',q:'',recs:[],custom:{},wurl:'',model:'claude-sonnet-4-20250514'};
 const load=()=>{try{const d=JSON.parse(localStorage.getItem(SK));if(d)Object.assign(S,d)}catch(e){}};
 const save=()=>{try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}};
 const $=id=>document.getElementById(id);
@@ -413,26 +413,29 @@ $('exp-btn').onclick=exportData;
 // ═══════════════════════════════════════
 async function scanLandscape(){
 const btn=$('scanbtn');if(!btn)return;
-btn.disabled=true;btn.textContent='🔍 Scanning…';
+btn.disabled=true;btn.textContent='🔍 Scanning with '+S.model.split('-').slice(0,2).join('-')+'…';
 const existing=allI().map(i=>i.t).join(', ');
-try{
-const res=await fetch(S.wurl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-model:'claude-sonnet-4-20250514',max_tokens:4000,
-tools:[{type:'web_search_20250305',name:'web_search'}],
-messages:[{role:'user',content:`You are an AI engineering landscape researcher. Search X (Twitter), AI engineering blogs, Hacker News, and GitHub for the latest notable developments in AI/ML engineering from the past 2-3 weeks.
+const prompt=`You are an AI engineering landscape researcher. Search X (Twitter), AI engineering blogs, Hacker News, and GitHub for the latest notable developments in AI/ML engineering from the past 2-3 weeks.
 
 Focus on: new tools/frameworks gaining traction, new model releases, training/inference breakthroughs, notable open-source repos (by people like Karpathy, Andrej, etc.), paradigm shifts, emerging best practices.
 
 These topics are ALREADY in my roadmap — do NOT suggest duplicates: ${existing}
 
 Return ONLY a JSON array (no markdown, no backticks) of 3-5 suggestions:
-[{"title":"...","description":"...","tags":["..."],"priority":"critical|high|medium|low","phase":"best matching phase id from: ${P.map(p=>p.id).join(',')}","resources":[{"name":"...","url":"...","type":"video|docs|blog|code"}],"worth_it":true/false,"reasoning":"1 sentence on why this is/isn't worth adding"}]`}]
+[{"title":"...","description":"...","tags":["..."],"priority":"critical|high|medium|low","phase":"best matching phase id from: ${P.map(p=>p.id).join(',')}","resources":[{"name":"...","url":"...","type":"video|docs|blog|code"}],"worth_it":true/false,"reasoning":"1 sentence on why this is/isn't worth adding"}]`;
+try{
+const res=await fetch(S.wurl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+model:S.model,max_tokens:4000,
+tools:[{type:'web_search_20250305',name:'web_search'}],
+messages:[{role:'user',content:prompt}]
 })});
 const data=await res.json();
-const text=data.content?.map(b=>b.text||'').join('')||'';
-const jsonMatch=text.match(/\[[\s\S]*\]/);
+if(data.error){alert('API error: '+data.error);btn.disabled=false;btn.textContent='🔍 Scan landscape';return}
+// Worker returns normalized {text, provider, ...}
+const text=data.text||data.content?.map(b=>b.text||'').join('')||'';
+const jsonMatch=text.match(/\[[\s\S]*?\]/);
 if(jsonMatch){S.recs=JSON.parse(jsonMatch[0]);save();renderRecs()}
-else{alert('Could not parse results. Try again.')}
+else{alert('Could not parse results. The model returned:\n\n'+text.slice(0,300))}
 }catch(e){alert('Scan failed: '+e.message)}
 btn.disabled=false;btn.textContent='🔍 Scan landscape';
 }
@@ -441,13 +444,41 @@ btn.disabled=false;btn.textContent='🔍 Scan landscape';
 // SETTINGS MODAL
 // ═══════════════════════════════════════
 function openSettings(){
+const models=[
+  {g:'Anthropic',opts:[
+    {v:'claude-sonnet-4-20250514',l:'Claude Sonnet 4'},
+    {v:'claude-opus-4-20250514',l:'Claude Opus 4'},
+    {v:'claude-haiku-4-5-20251001',l:'Claude Haiku 4.5'},
+  ]},
+  {g:'OpenAI',opts:[
+    {v:'gpt-4o',l:'GPT-4o'},
+    {v:'gpt-4.1',l:'GPT-4.1'},
+    {v:'gpt-5',l:'GPT-5'},
+    {v:'o3',l:'o3'},
+    {v:'o4-mini',l:'o4-mini'},
+  ]},
+];
 $('modal').innerHTML=`<h3>⚙ Settings</h3>
 <label>Cloudflare Worker URL</label>
-<div class="minfo">Proxy for Claude API calls. Deploy the worker.js file to Cloudflare Workers and paste the URL here. Required for landscape scanning.</div>
+<div class="minfo">Proxy for API calls. Deploy worker.js to Cloudflare Workers and paste the URL here. Required for landscape scanning. Add both ANTHROPIC_KEY and OPENAI_KEY as encrypted env vars on the worker to use either provider.</div>
 <input type="url" id="wurl-input" placeholder="https://your-worker.workers.dev" value="${S.wurl}">
-<div class="mrow"><button class="mbtn mbtn-p" id="save-wurl">Save</button><button class="mbtn mbtn-s" id="close-modal">Cancel</button></div>`;
+<label style="margin-top:4px">Model</label>
+<div class="minfo">Select which model powers the landscape scanner. Anthropic models use /v1/messages, OpenAI models use /v1/responses — the worker handles translation automatically.</div>
+<select id="model-select" style="width:100%;padding:8px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:13px;outline:none;margin-bottom:8px;-webkit-appearance:none">
+${models.map(g=>`<optgroup label="${g.g}">${g.opts.map(o=>`<option value="${o.v}"${S.model===o.v?' selected':''}>${o.l}</option>`).join('')}</optgroup>`).join('')}
+<option value="custom"${!models.some(g=>g.opts.some(o=>o.v===S.model))?'selected':''}>Custom…</option>
+</select>
+<input type="text" id="model-custom" placeholder="e.g. gpt-5-turbo" value="${!models.some(g=>g.opts.some(o=>o.v===S.model))?S.model:''}" style="display:${models.some(g=>g.opts.some(o=>o.v===S.model))?'none':'block'}">
+<div class="mrow"><button class="mbtn mbtn-p" id="save-settings">Save</button><button class="mbtn mbtn-s" id="close-modal">Cancel</button></div>`;
 $('mov').classList.add('open');
-$('save-wurl').onclick=()=>{S.wurl=$('wurl-input').value.trim().replace(/\/$/,'');save();$('mov').classList.remove('open');renderFbar()};
+$('model-select').onchange=()=>{$('model-custom').style.display=$('model-select').value==='custom'?'block':'none'};
+$('save-settings').onclick=()=>{
+  S.wurl=$('wurl-input').value.trim().replace(/\/$/,'');
+  const sel=$('model-select').value;
+  S.model=sel==='custom'?$('model-custom').value.trim():sel;
+  if(!S.model)S.model='claude-sonnet-4-20250514';
+  save();$('mov').classList.remove('open');renderFbar();
+};
 $('close-modal').onclick=()=>$('mov').classList.remove('open');
 }
 
@@ -486,7 +517,7 @@ $('afab').onclick=openA;$('aov').onclick=closeA;$('acl').onclick=closeA;$('rclic
 $('gear').onclick=openSettings;
 $('mov').onclick=e=>{if(e.target===$('mov'))$('mov').classList.remove('open')};
 document.onkeydown=e=>{if(e.key==='Escape'){if($('mov').classList.contains('open'))$('mov').classList.remove('open');else if(expandedId){const cid=expandedId;expandedId=null;renderItems();const el=document.querySelector(`.card[data-id="${cid}"]`);if(el)el.scrollIntoView({behavior:'instant',block:'nearest'})}else closeA()}};
-$('rb').onclick=()=>{if(confirm('Reset ALL progress, notes, and custom cards? Cannot undo.')){S={ck:{},ip:{},notes:{},ap:'foundations',fl:'all',q:'',recs:[],custom:{},wurl:S.wurl};save();render()}};
+$('rb').onclick=()=>{if(confirm('Reset ALL progress, notes, and custom cards? Cannot undo.')){S={ck:{},ip:{},notes:{},ap:'foundations',fl:'all',q:'',recs:[],custom:{},wurl:S.wurl,model:S.model};save();render()}};
 
 load();render();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
